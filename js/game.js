@@ -7,8 +7,8 @@ var plat=[];
 var platLava=[];
 var platFragile=[];
 var totalPlats = 150;
-var platRatio = 1;
-var score=-1;
+var platRatio = 1.05;
+var score;
 var highscore;
 window.intervalId = 0;
 
@@ -65,8 +65,9 @@ function startGame(evt) {
 
     window.onblur = pauseGame;
 
+    platRatio = 1.05;
     score = -1;
-    refresh(true);
+    refresh(false);
     game();
 }
 
@@ -117,6 +118,23 @@ function resumeGameTouch(){
     game();
 }
 
+function gameOver(){
+    clearInterval(window.intervalId);
+    document.removeEventListener("keydown",keyDown);
+    document.removeEventListener("keyup",keyUp);
+    document.removeEventListener("touchstart",touchStart);
+    document.removeEventListener("touchend",touchEnd);
+    window.removeEventListener("deviceorientation", gyroscopeChange);
+
+    document.addEventListener("keydown", startGame);
+    document.addEventListener("touchstart", startGame);
+
+    ctx.fillStyle = "rgba(120, 120, 120, 0.7)";
+	ctx.fillRect(0,0,canv.width,canv.height);
+    ctx.fillStyle = "white"
+    ctx.font="36px Arial";
+    ctx.fillText("Your score was: " + score, canv.width/3, canv.height/2);
+}
 function refresh(died) {
     player.xv = 0;
     player.yv = 0;
@@ -129,8 +147,7 @@ function refresh(died) {
             createCookie("highscore", score);
             highscore = score;
         }
-        score = 0;
-        platRatio = 1;
+        gameOver();
     }
 	plat=[];
     platLava=[];
