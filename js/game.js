@@ -1,10 +1,6 @@
-var px = 200;
-var py = 200;
-var xv = 0;
-var yv = 0;
+
 var gamma = 0;
 var grav = 0.5;
-var onG = false;
 var holdLeft = false;
 var holdRight = false;
 var plat=[];
@@ -13,6 +9,30 @@ var platFragile=[];
 var totalPlats = 150;
 var platRatio = 1;
 var score=-1;
+
+var Person = function(px, py){
+    this.px = px;
+    this.py = py;
+    this.xv = 0;
+    this.yv = 0;
+    this.onG = false;
+    this.c = "#ffffff";
+}
+Person.prototype.draw = function () {
+    ctx.fillStyle="white";
+	ctx.fillRect(this.px-5,this.py-20,10,20);
+    ctx.fillStyle="black";
+    if(this.xv > 0.05){
+        ctx.fillRect(this.px+1, this.py-17, 2, 3);
+    } else if(this.xv<-0.05){
+        ctx.fillRect(this.px-3, this.py-17, 2, 3);
+    } else {
+        ctx.fillRect(this.px+1, this.py-17, 2, 3);
+        ctx.fillRect(this.px-3, this.py-17, 2, 3);
+    }
+};
+
+var player = new Person(200, 200);
 
 window.onload=function() {
 	canv=document.getElementById("gc");
@@ -27,7 +47,9 @@ window.onload=function() {
 	refresh(true);
 }
 function refresh(died) {
-    xv=yv=0;
+    player.xv = 0;
+    player.yv = 0;
+    //xv=yv=0;
 	if(!died){
         score++;
         platRatio *= 0.95;
@@ -90,8 +112,8 @@ function refresh(died) {
     }
     plat.push(
         {
-            x:px-(px % 30),
-            y:py-(py % 30),
+            x:player.px-(player.px % 30),
+            y:player.py-(player.py % 30),
             w:canv.width/30,
             h:canv.width/30,
             c:"#aaaaaa"
@@ -117,39 +139,39 @@ function refresh(died) {
 function update() {
 	if(holdLeft) {
         if(gamma > -15 && gamma!=0){
-            xv = (gamma + 5)*0.1*4;
+            player.xv = (gamma + 5)*0.1*4;
         } else {
-            xv=-4;
+            player.xv=-4;
         }
 	}
 	if(holdRight) {
         if(gamma < 15 && gamma!=0){
-            xv = (gamma - 5)*0.1*4;
+            player.xv = (gamma - 5)*0.1*4;
         } else {
-		    xv=4;
+		    player.xv=4;
         }
 	}
-	px+=xv;
-	py+=yv;
-	if(onG) {
-		xv *= 0.2;
+	player.px+=player.xv;
+	player.py+=player.yv;
+	if(player.onG) {
+		player.xv *= 0.2;
 	} else {
-		yv += grav;
+		player.yv += grav;
 	}
 
-    if(px<0){
-        px = canv.width;
+    if(player.px<0){
+        player.px = canv.width;
     }
-    if(px>canv.width){
-        px = 0;
+    if(player.px>canv.width){
+        player.px = 0;
     }
-	onG=false;
+	player.onG=false;
 	for(i=0;i<plat.length;i++) {
-		if(px>plat[i].x && px<plat[i].x+plat[i].w &&
-			py>plat[i].y && py<plat[i].y+plat[i].h) {
+		if(player.px>plat[i].x && player.px<plat[i].x+plat[i].w &&
+			player.py>plat[i].y && player.py<plat[i].y+plat[i].h) {
 			if(plat[i].c == "#009900"){refresh(false); return;}
-			py=plat[i].y;
-			onG=true;
+			player.py=plat[i].y;
+			player.onG=true;
 		}
 	}
 
@@ -158,14 +180,14 @@ function update() {
             platFragile[i].t--;
         }
 
-        if(px>platFragile[i].x && px<platFragile[i].x+platFragile[i].w &&
-            py>platFragile[i].y && py<platFragile[i].y+platFragile[i].h) {
+        if(player.px>platFragile[i].x && player.px<platFragile[i].x+platFragile[i].w &&
+            player.py>platFragile[i].y && player.py<platFragile[i].y+platFragile[i].h) {
             // start timer
             if(platFragile[i].t < 0){
                 platFragile[i].t = 30;
             }
-            py=platFragile[i].y;
-			onG=true;
+            player.py=platFragile[i].y;
+			player.onG=true;
         }
         if(platFragile[i].t == 0){
             //remove block
@@ -174,8 +196,8 @@ function update() {
     }
 
     for(i=0;i<platLava.length;i++) {
-		if(px>platLava[i].x && px<platLava[i].x+platLava[i].w &&
-			py>platLava[i].y && py<platLava[i].y+platLava[i].h) {
+		if(player.px>platLava[i].x && player.px<platLava[i].x+platLava[i].w &&
+			player.py>platLava[i].y && player.py<platLava[i].y+platLava[i].h) {
             refresh(true);
             return;
 		}
@@ -211,17 +233,7 @@ function update() {
 		ctx.fillStyle=platLava[i].c;
         ctx.fillRect(platLava[i].x,platLava[i].y,platLava[i].w,platLava[i].h);
 	}
-	ctx.fillStyle="white";
-	ctx.fillRect(px-5,py-20,10,20);
-    ctx.fillStyle="black";
-    if(xv > 0.05){
-        ctx.fillRect(px+1, py-17, 2, 3);
-    } else if(xv<-0.05){
-        ctx.fillRect(px-3, py-17, 2, 3);
-    } else {
-        ctx.fillRect(px+1, py-17, 2, 3);
-        ctx.fillRect(px-3, py-17, 2, 3);
-    }
+	player.draw();
 
     ctx.fillStyle="white";
 	ctx.fillText(score,10,40);
@@ -232,8 +244,8 @@ function keyDown(evt) {
 			holdLeft=true;
 			break;
 		case 38:
-			if(onG) {
-				yv=-10;
+			if(player.onG) {
+				player.yv=-10;
 			}
 			break;
 		case 39:
@@ -242,13 +254,13 @@ function keyDown(evt) {
 	}
 }
 function touchStart(evt){
-    if(onG) {
-        yv=-10;
+    if(player.onG) {
+        player.yv=-10;
     }
 }
 function touchEnd(evt){
-    if(yv<-4) {
-        yv=-4;
+    if(player.yv<-4) {
+        player.yv=-4;
     }
 }
 
@@ -274,8 +286,8 @@ function keyUp(evt) {
 			holdLeft=false;
 			break;
 		case 38:
-			if(yv<-4) {
-				yv=-4;
+			if(player.yv<-4) {
+				player.yv=-4;
 			}
 			break;
 		case 39:
