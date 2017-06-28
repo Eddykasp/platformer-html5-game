@@ -37,8 +37,26 @@ var player = new Person(200, 200);
 window.onload=function() {
 	canv=document.getElementById("gc");
 	ctx=canv.getContext("2d");
-	ctx.font="30px Arial";
-	setInterval(update,1000/30);
+    ctx.font="30px Arial";
+	document.addEventListener("keydown", startGame);
+    document.addEventListener("touchstart", startGame);
+    refresh(true);
+    update();
+    ctx.fillStyle = "rgba(120, 120, 120, 0.7)";
+	ctx.fillRect(0,0,canv.width,canv.height);
+    ctx.fillStyle = "white"
+    ctx.font="36px Arial";
+    ctx.fillText("Press any key or tap the screen to begin", canv.width/8, canv.height/2);
+}
+
+function startGame(evt) {
+    document.removeEventListener("keydown", startGame);
+    game();
+}
+
+function game(){
+    ctx.font="30px Arial";
+    setInterval(update,1000/30);
 	document.addEventListener("keydown",keyDown);
 	document.addEventListener("keyup",keyUp);
     document.addEventListener("touchstart",touchStart);
@@ -46,6 +64,7 @@ window.onload=function() {
     window.addEventListener("deviceorientation", gyroscopeChange);
 	refresh(true);
 }
+
 function refresh(died) {
     player.xv = 0;
     player.yv = 0;
