@@ -9,6 +9,7 @@ var platFragile=[];
 var totalPlats = 150;
 var platRatio = 1;
 var score=-1;
+var highscore;
 window.intervalId = 0;
 
 var Person = function(px, py){
@@ -36,12 +37,19 @@ Person.prototype.draw = function () {
 var player = new Person(200, 200);
 
 window.onload=function() {
+    var tmp;
+    if(tmp = getCookie("highscore")){
+        highscore = parseInt(tmp);
+    } else {
+        highscore = 0;
+    }
+
 	canv=document.getElementById("gc");
 	ctx=canv.getContext("2d");
     ctx.font="30px Arial";
 	document.addEventListener("keydown", startGame);
     document.addEventListener("touchstart", startGame);
-    score = 50;
+    score = highscore;
     refresh(false);
     update();
     ctx.fillStyle = "rgba(120, 120, 120, 0.7)";
@@ -117,6 +125,10 @@ function refresh(died) {
         score++;
         platRatio *= 0.95;
     } else {
+        if (highscore < score){
+            createCookie("highscore", score);
+            highscore = score;
+        }
         score = 0;
         platRatio = 1;
     }
@@ -360,4 +372,32 @@ function keyUp(evt) {
 			holdRight=false;
 			break;
 	}
+}
+
+var createCookie = function(name, value, days) {
+    var expires;
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toGMTString();
+    }
+    else {
+        expires = "";
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = document.cookie.length;
+            }
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    return "";
 }
