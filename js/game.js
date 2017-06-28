@@ -9,6 +9,7 @@ var platFragile=[];
 var totalPlats = 150;
 var platRatio = 1;
 var score=-1;
+var intervalId;
 
 var Person = function(px, py){
     this.px = px;
@@ -40,7 +41,8 @@ window.onload=function() {
     ctx.font="30px Arial";
 	document.addEventListener("keydown", startGame);
     document.addEventListener("touchstart", startGame);
-    refresh(true);
+    score = 50;
+    refresh(false);
     update();
     ctx.fillStyle = "rgba(120, 120, 120, 0.7)";
 	ctx.fillRect(0,0,canv.width,canv.height);
@@ -55,8 +57,9 @@ function startGame(evt) {
 }
 
 function game(){
+    score = -1;
     ctx.font="30px Arial";
-    setInterval(update,1000/30);
+    intervalId = setInterval(update,1000/30);
 	document.addEventListener("keydown",keyDown);
 	document.addEventListener("keyup",keyUp);
     document.addEventListener("touchstart",touchStart);
