@@ -49,7 +49,7 @@ window.onload=function() {
     ctx.font="30px Arial";
 	document.addEventListener("keydown", startGame);
     document.addEventListener("touchstart", startGame);
-    score = highscore;
+    score = highscore-1;
     refresh(false);
     update();
     ctx.fillStyle = "rgba(120, 120, 120, 0.7)";
