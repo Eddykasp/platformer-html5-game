@@ -1,8 +1,7 @@
-## Welcome to GitHub Pages
+## Platformer
 
-You can use the [editor on GitHub](https://github.com/Eddykasp/platformer-html5-game/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+Play the game [here](https://eddykasp.github.io/platformer-html5-game/plat.html)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
 ### Markdown
 
