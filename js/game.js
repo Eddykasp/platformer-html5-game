@@ -9,7 +9,7 @@ var platFragile=[];
 var totalPlats = 150;
 var platRatio = 1;
 var score=-1;
-var intervalId;
+window.intervalId = 0;
 
 var Person = function(px, py){
     this.px = px;
@@ -53,19 +53,52 @@ window.onload=function() {
 
 function startGame(evt) {
     document.removeEventListener("keydown", startGame);
+    document.removeEventListener("touchstart", startGame);
+
+    score = -1;
+    refresh(true);
     game();
 }
 
 function game(){
-    score = -1;
+
     ctx.font="30px Arial";
-    intervalId = setInterval(update,1000/30);
+    window.intervalId = setInterval(update,1000/30);
 	document.addEventListener("keydown",keyDown);
 	document.addEventListener("keyup",keyUp);
     document.addEventListener("touchstart",touchStart);
     document.addEventListener("touchend",touchEnd);
     window.addEventListener("deviceorientation", gyroscopeChange);
-	refresh(true);
+}
+
+function pauseGame(){
+    clearInterval(window.intervalId);
+    document.removeEventListener("keydown",keyDown);
+    document.removeEventListener("keyup",keyUp);
+    document.removeEventListener("touchstart",touchStart);
+    document.removeEventListener("touchend",touchEnd);
+    window.removeEventListener("deviceorientation", gyroscopeChange);
+
+    document.addEventListener("keydown", resumeGame);
+    document.addEventListener("touchstart", resumeGame);
+
+    ctx.fillStyle = "rgba(120, 120, 120, 0.7)";
+	ctx.fillRect(0,0,canv.width,canv.height);
+    ctx.fillStyle = "white"
+    ctx.font="36px Arial";
+    ctx.fillText("Press ESC to continue", canv.width/3-20, canv.height/2);
+}
+
+function resumeGame(evt){
+    switch (evt.keyCode) {
+        case 27:
+        document.removeEventListener("keydown", resumeGame);
+        document.removeEventListener("touchstart", resumeGame);
+        game();
+            break;
+        default:
+
+    }
 }
 
 function refresh(died) {
@@ -273,6 +306,9 @@ function keyDown(evt) {
 		case 39:
 			holdRight=true;
 			break;
+        case 27:
+            pauseGame();
+            break;
 	}
 }
 function touchStart(evt){
