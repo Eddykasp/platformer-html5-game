@@ -19,7 +19,7 @@ var Person = function(px, py){
     this.c = "#ffffff";
 }
 Person.prototype.draw = function () {
-    ctx.fillStyle="white";
+    ctx.fillStyle=this.c;
 	ctx.fillRect(this.px-5,this.py-20,10,20);
     ctx.fillStyle="black";
     if(this.xv > 0.05){
