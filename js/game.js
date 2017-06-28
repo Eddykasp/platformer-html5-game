@@ -65,8 +65,6 @@ function startGame(evt) {
     document.removeEventListener("keydown", startGame);
     document.removeEventListener("touchstart", startGame);
 
-    window.onblur = pauseGame;
-
     platRatio = 1.05;
     score = -1;
     refresh(false);
@@ -75,6 +73,7 @@ function startGame(evt) {
 
 function game(){
 
+    window.onblur = pauseGame;
     ctx.font="30px Arial";
     window.intervalId = setInterval(update,1000/30);
 	document.addEventListener("keydown",keyDown);
@@ -121,6 +120,7 @@ function resumeGameTouch(){
 }
 
 function gameOver(){
+    window.onblur = function(){};
     clearInterval(window.intervalId);
     document.removeEventListener("keydown",keyDown);
     document.removeEventListener("keyup",keyUp);
