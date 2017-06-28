@@ -47,6 +47,8 @@ window.onload=function() {
 	canv=document.getElementById("gc");
 	ctx=canv.getContext("2d");
     ctx.font="30px Arial";
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
 	document.addEventListener("keydown", startGame);
     document.addEventListener("touchstart", startGame);
     score = highscore-1;
@@ -56,7 +58,7 @@ window.onload=function() {
 	ctx.fillRect(0,0,canv.width,canv.height);
     ctx.fillStyle = "white"
     ctx.font="36px Arial";
-    ctx.fillText("Press any key or tap the screen to begin", canv.width/8, canv.height/2);
+    ctx.fillText("Press any key or tap the screen to begin", canv.width/2, canv.height/2);
 }
 
 function startGame(evt) {
@@ -97,7 +99,7 @@ function pauseGame(){
 	ctx.fillRect(0,0,canv.width,canv.height);
     ctx.fillStyle = "white"
     ctx.font="36px Arial";
-    ctx.fillText("Press ESC or tap to continue", canv.width/4, canv.height/2);
+    ctx.fillText("Press ESC or tap to continue", canv.width/2, canv.height/2);
 }
 
 function resumeGameKey(evt){
@@ -133,12 +135,11 @@ function gameOver(){
 	ctx.fillRect(0,0,canv.width,canv.height);
     ctx.fillStyle = "white"
     ctx.font="36px Arial";
-    ctx.fillText("Your score was: " + score, canv.width/3, canv.height/2);
+    ctx.fillText("Your score was: " + score, canv.width/2, canv.height/2);
 }
 function refresh(died) {
     player.xv = 0;
     player.yv = 0;
-    //xv=yv=0;
 	if(!died){
         score++;
         platRatio *= 0.95;
@@ -333,7 +334,7 @@ function drawScreen() {
 	player.draw();
 
     ctx.fillStyle="white";
-	ctx.fillText(score,10,40);
+	ctx.fillText(score,40,40);
 }
 function keyDown(evt) {
 	switch(evt.keyCode) {
