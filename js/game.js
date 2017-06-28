@@ -1,15 +1,19 @@
-px=py=200;
-xv=yv=0;
-gamma=0;
-grav=0.5;
-onG=false;
-holdLeft=holdRight=false;
-plat=[];
-platLava=[];
-platFragile=[];
-totalPlats = 150;
-platRatio = 1;
-score=-1;
+var px = 200;
+var py = 200;
+var xv = 0;
+var yv = 0;
+var gamma = 0;
+var grav = 0.5;
+var onG = false;
+var holdLeft = false;
+var holdRight = false;
+var plat=[];
+var platLava=[];
+var platFragile=[];
+var totalPlats = 150;
+var platRatio = 1;
+var score=-1;
+
 window.onload=function() {
 	canv=document.getElementById("gc");
 	ctx=canv.getContext("2d");
