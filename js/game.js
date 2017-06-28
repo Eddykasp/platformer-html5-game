@@ -147,6 +147,7 @@ function refresh(died) {
             createCookie("highscore", score);
             highscore = score;
         }
+        drawScreen();
         gameOver();
     }
 	plat=[];
@@ -295,7 +296,11 @@ function update() {
 		}
 	}
 
-	ctx.fillStyle="black";
+	drawScreen();
+}
+
+function drawScreen() {
+    ctx.fillStyle="black";
 	ctx.fillRect(0,0,canv.width,canv.height);
     for(i=0;i<platFragile.length;i++) {
         if(platFragile[i].t >= 0){
