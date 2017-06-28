@@ -1,4 +1,6 @@
 canvas {
     border: 3px;
     border-style: ridge;
+    margin: auto;
+    display: block;
 }
