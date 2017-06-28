@@ -55,6 +55,8 @@ function startGame(evt) {
     document.removeEventListener("keydown", startGame);
     document.removeEventListener("touchstart", startGame);
 
+    window.onblur = pauseGame;
+
     score = -1;
     refresh(true);
     game();
@@ -79,26 +81,32 @@ function pauseGame(){
     document.removeEventListener("touchend",touchEnd);
     window.removeEventListener("deviceorientation", gyroscopeChange);
 
-    document.addEventListener("keydown", resumeGame);
-    document.addEventListener("touchstart", resumeGame);
+    document.addEventListener("keydown", resumeGameKey);
+    document.addEventListener("touchstart", resumeGameTouch);
 
     ctx.fillStyle = "rgba(120, 120, 120, 0.7)";
 	ctx.fillRect(0,0,canv.width,canv.height);
     ctx.fillStyle = "white"
     ctx.font="36px Arial";
-    ctx.fillText("Press ESC to continue", canv.width/3-20, canv.height/2);
+    ctx.fillText("Press ESC or tap to continue", canv.width/4, canv.height/2);
 }
 
-function resumeGame(evt){
+function resumeGameKey(evt){
     switch (evt.keyCode) {
         case 27:
-        document.removeEventListener("keydown", resumeGame);
-        document.removeEventListener("touchstart", resumeGame);
+        document.removeEventListener("keydown", resumeGameKey);
+        document.removeEventListener("touchstart", resumeGameTouch);
         game();
             break;
         default:
 
     }
+}
+
+function resumeGameTouch(){
+    document.removeEventListener("keydown", resumeGameKey);
+    document.removeEventListener("touchstart", resumeGameTouch);
+    game();
 }
 
 function refresh(died) {
