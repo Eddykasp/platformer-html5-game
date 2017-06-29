@@ -34,6 +34,11 @@ Person.prototype.draw = function () {
     }
 };
 
+Person.prototype.move = function (){
+    this.px+=this.xv;
+	this.py+=this.yv;
+}
+
 var player = new Person(200, 200);
 
 window.onload=function() {
@@ -245,8 +250,7 @@ function update() {
 		    player.xv=4;
         }
 	}
-	player.px+=player.xv;
-	player.py+=player.yv;
+	player.move();
 	if(player.onG) {
 		player.xv *= 0.2;
 	} else {
