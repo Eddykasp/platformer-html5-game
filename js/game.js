@@ -174,6 +174,10 @@ function gameOver(){
     document.addEventListener("keydown", startGame);
     document.addEventListener("touchstart", startGame);
 
+    holdLeft = false;
+    holdRight = false;
+    holdUp = false;
+
     ctx.fillStyle = "rgba(120, 120, 120, 0.7)";
 	ctx.fillRect(0,0,canv.width,canv.height);
     ctx.fillStyle = "white"
