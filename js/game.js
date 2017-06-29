@@ -3,6 +3,7 @@ var gamma = 0;
 var grav = 0.5;
 var holdLeft = false;
 var holdRight = false;
+var holdUp = false;
 var plat=[];
 var platLava=[];
 var platFragile=[];
@@ -58,6 +59,9 @@ Person.prototype.move = function (){
 
 Person.prototype.update = function () {
     // is called every frame
+    if(this.onG && holdUp) {
+        this.yv=-10;
+    }
     if(this.onG){
         this.animationReady = true;
     } else {
@@ -135,6 +139,9 @@ function pauseGame(){
     ctx.fillStyle = "white"
     ctx.font="36px Arial";
     ctx.fillText("Press ESC or tap to continue", canv.width/2, canv.height/2);
+
+    holdLeft = false;
+    holdRight = false;
 }
 
 function resumeGameKey(evt){
@@ -166,6 +173,10 @@ function gameOver(){
 
     document.addEventListener("keydown", startGame);
     document.addEventListener("touchstart", startGame);
+
+    holdLeft = false;
+    holdRight = false;
+    holdUp = false;
 
     ctx.fillStyle = "rgba(120, 120, 120, 0.7)";
 	ctx.fillRect(0,0,canv.width,canv.height);
@@ -301,6 +312,7 @@ function update() {
 			if(plat[i].c == "#009900"){refresh(false); return;}
 			player.py=plat[i].y;
 			player.onG=true;
+            player.yv = 0.000001;
 		}
 	}
 
@@ -317,6 +329,7 @@ function update() {
             }
             player.py=platFragile[i].y;
 			player.onG=true;
+            player.yv = 0.000001;
         }
         if(platFragile[i].t == 0){
             //remove block
@@ -378,9 +391,7 @@ function keyDown(evt) {
 			holdLeft=true;
 			break;
 		case 38:
-			if(player.onG) {
-				player.yv=-10;
-			}
+            holdUp = true;
 			break;
 		case 39:
 			holdRight=true;
@@ -426,6 +437,7 @@ function keyUp(evt) {
 			if(player.yv<-4) {
 				player.yv=-4;
 			}
+            holdUp = false;
 			break;
 		case 39:
 			holdRight=false;
