@@ -312,6 +312,7 @@ function update() {
 			if(plat[i].c == "#009900"){refresh(false); return;}
 			player.py=plat[i].y;
 			player.onG=true;
+            player.yv = 0.000001;
 		}
 	}
 
@@ -328,6 +329,7 @@ function update() {
             }
             player.py=platFragile[i].y;
 			player.onG=true;
+            player.yv = 0.000001;
         }
         if(platFragile[i].t == 0){
             //remove block
