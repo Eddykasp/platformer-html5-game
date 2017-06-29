@@ -3,6 +3,7 @@ var gamma = 0;
 var grav = 0.5;
 var holdLeft = false;
 var holdRight = false;
+var holdUp = false;
 var plat=[];
 var platLava=[];
 var platFragile=[];
@@ -58,6 +59,9 @@ Person.prototype.move = function (){
 
 Person.prototype.update = function () {
     // is called every frame
+    if(this.onG && holdUp) {
+        this.yv=-10;
+    }
     if(this.onG){
         this.animationReady = true;
     } else {
@@ -381,9 +385,7 @@ function keyDown(evt) {
 			holdLeft=true;
 			break;
 		case 38:
-			if(player.onG) {
-				player.yv=-10;
-			}
+            holdUp = true;
 			break;
 		case 39:
 			holdRight=true;
@@ -429,6 +431,7 @@ function keyUp(evt) {
 			if(player.yv<-4) {
 				player.yv=-4;
 			}
+            holdUp = false;
 			break;
 		case 39:
 			holdRight=false;
