@@ -19,20 +19,56 @@ var Person = function(px, py){
     this.yv = 0;
     this.onG = false;
     this.c = "#ffffff";
+    this.animationReady = true;
+    this.sprites = [
+        function(){
+            ctx.fillStyle=this.c;
+        	ctx.fillRect(this.px-5,this.py-20,10,20);
+            ctx.fillStyle="black";
+            if(this.xv > 0.05){
+                ctx.fillRect(this.px+1, this.py-17, 2, 3);
+            } else if(this.xv<-0.05){
+                ctx.fillRect(this.px-3, this.py-17, 2, 3);
+            } else {
+                ctx.fillRect(this.px+1, this.py-17, 2, 3);
+                ctx.fillRect(this.px-3, this.py-17, 2, 3);
+            }
+        },
+        function () {
+            ctx.fillStyle=this.c;
+        	ctx.fillRect(this.px-5,this.py-17,10,17);
+            ctx.fillRect(this.px-7, this.py-5, 14, 5);
+            ctx.fillStyle="black";
+            if(this.xv > 0.05){
+                ctx.fillRect(this.px+1, this.py-15, 2, 3);
+            } else if(this.xv<-0.05){
+                ctx.fillRect(this.px-3, this.py-15, 2, 3);
+            } else {
+                ctx.fillRect(this.px+1, this.py-15, 2, 3);
+                ctx.fillRect(this.px-3, this.py-15, 2, 3);
+            }
+    }];
 }
-Person.prototype.draw = function () {
-    ctx.fillStyle=this.c;
-	ctx.fillRect(this.px-5,this.py-20,10,20);
-    ctx.fillStyle="black";
-    if(this.xv > 0.05){
-        ctx.fillRect(this.px+1, this.py-17, 2, 3);
-    } else if(this.xv<-0.05){
-        ctx.fillRect(this.px-3, this.py-17, 2, 3);
+Person.prototype.draw = function () {};
+
+Person.prototype.move = function (){
+    this.px+=this.xv;
+	this.py+=this.yv;
+}
+
+Person.prototype.update = function () {
+    // is called every frame
+    if(this.onG){
+        this.animationReady = true;
     } else {
-        ctx.fillRect(this.px+1, this.py-17, 2, 3);
-        ctx.fillRect(this.px-3, this.py-17, 2, 3);
+        this.animationReady = false;
     }
-};
+    if (this.animationReady){
+        this.draw = this.sprites[1];
+    } else {
+        this.draw = this.sprites[0];
+    }
+}
 
 var player = new Person(200, 200);
 
@@ -47,6 +83,8 @@ window.onload=function() {
 	canv=document.getElementById("gc");
 	ctx=canv.getContext("2d");
     ctx.font="30px Arial";
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
 	document.addEventListener("keydown", startGame);
     document.addEventListener("touchstart", startGame);
     score = highscore-1;
@@ -56,14 +94,12 @@ window.onload=function() {
 	ctx.fillRect(0,0,canv.width,canv.height);
     ctx.fillStyle = "white"
     ctx.font="36px Arial";
-    ctx.fillText("Press any key or tap the screen to begin", canv.width/8, canv.height/2);
+    ctx.fillText("Press any key or tap the screen to begin", canv.width/2, canv.height/2);
 }
 
 function startGame(evt) {
     document.removeEventListener("keydown", startGame);
     document.removeEventListener("touchstart", startGame);
-
-    window.onblur = pauseGame;
 
     platRatio = 1.05;
     score = -1;
@@ -73,6 +109,7 @@ function startGame(evt) {
 
 function game(){
 
+    window.onblur = pauseGame;
     ctx.font="30px Arial";
     window.intervalId = setInterval(update,1000/30);
 	document.addEventListener("keydown",keyDown);
@@ -97,7 +134,7 @@ function pauseGame(){
 	ctx.fillRect(0,0,canv.width,canv.height);
     ctx.fillStyle = "white"
     ctx.font="36px Arial";
-    ctx.fillText("Press ESC or tap to continue", canv.width/4, canv.height/2);
+    ctx.fillText("Press ESC or tap to continue", canv.width/2, canv.height/2);
 }
 
 function resumeGameKey(evt){
@@ -119,6 +156,7 @@ function resumeGameTouch(){
 }
 
 function gameOver(){
+    window.onblur = function(){};
     clearInterval(window.intervalId);
     document.removeEventListener("keydown",keyDown);
     document.removeEventListener("keyup",keyUp);
@@ -133,12 +171,11 @@ function gameOver(){
 	ctx.fillRect(0,0,canv.width,canv.height);
     ctx.fillStyle = "white"
     ctx.font="36px Arial";
-    ctx.fillText("Your score was: " + score, canv.width/3, canv.height/2);
+    ctx.fillText("Your score was: " + score, canv.width/2, canv.height/2);
 }
 function refresh(died) {
     player.xv = 0;
     player.yv = 0;
-    //xv=yv=0;
 	if(!died){
         score++;
         platRatio *= 0.95;
@@ -224,7 +261,7 @@ function refresh(died) {
 
     for(i=0;i<plat.length-1;i++) {
 		if(plat[i].x == plat[plat.length-1].x && plat[i].y == plat[plat.length-1].y){
-                plat[i].x = -1;
+                plat.splice(i,1);
 		}
 	}
 
@@ -244,8 +281,7 @@ function update() {
 		    player.xv=4;
         }
 	}
-	player.px+=player.xv;
-	player.py+=player.yv;
+	player.move();
 	if(player.onG) {
 		player.xv *= 0.2;
 	} else {
@@ -296,6 +332,7 @@ function update() {
 		}
 	}
 
+    player.update();
 	drawScreen();
 }
 
@@ -333,7 +370,7 @@ function drawScreen() {
 	player.draw();
 
     ctx.fillStyle="white";
-	ctx.fillText(score,10,40);
+	ctx.fillText(score,40,40);
 }
 function keyDown(evt) {
 	switch(evt.keyCode) {
