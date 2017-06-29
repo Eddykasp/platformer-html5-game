@@ -135,6 +135,9 @@ function pauseGame(){
     ctx.fillStyle = "white"
     ctx.font="36px Arial";
     ctx.fillText("Press ESC or tap to continue", canv.width/2, canv.height/2);
+
+    holdLeft = false;
+    holdRight = false;
 }
 
 function resumeGameKey(evt){
