@@ -230,7 +230,7 @@ function refresh(died) {
 
     for(i=0;i<plat.length-1;i++) {
 		if(plat[i].x == plat[plat.length-1].x && plat[i].y == plat[plat.length-1].y){
-                plat[i].x = -1;
+                plat.splice(i,1);
 		}
 	}
 
