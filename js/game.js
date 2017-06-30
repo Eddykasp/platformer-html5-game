@@ -102,7 +102,8 @@ window.onload = function() {
     ctx.fillRect(0, 0, canv.width, canv.height);
     ctx.fillStyle = 'white';
     ctx.font = '36px Arial';
-    ctx.fillText('Press any key or tap the screen to begin', canv.width/2,  canv.height/2);
+    ctx.fillText('Press any key or tap the screen to begin',
+        canv.width/2,  canv.height/2);
 };
 
 function startGame() {
