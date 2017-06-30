@@ -70,7 +70,11 @@
         "lines-around-comment": "error",
         "lines-around-directive": "error",
         "max-depth": "error",
-        "max-len": "off",
+        "max-len": [
+            "error",
+            80,
+            4
+        ],
         "max-lines": "off",
         "max-nested-callbacks": "error",
         "max-params": "error",
