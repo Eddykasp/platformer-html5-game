@@ -52,30 +52,27 @@ var Person = function(px, py){
             }
         }
     ];
-};
-
-Person.prototype.draw = function () {};
-
-Person.prototype.move = function () {
-    this.px += this.xv;
-    this.py += this.yv;
-};
-
-Person.prototype.update = function () {
-    // is called every frame
-    if (this.onG && holdUp) {
-        this.yv =- 10;
-    }
-    if (this.onG) {
-        this.animationReady = true;
-    } else {
-        this.animationReady = false;
-    }
-    if (this.animationReady) {
-        this.draw = this.sprites[1];
-    } else {
-        this.draw = this.sprites[0];
-    }
+    this.draw = this.sprites[1];
+    this.move = function () {
+        this.px += this.xv;
+        this.py += this.yv;
+    };
+    this.update = function () {
+        // is called every frame
+        if (this.onG && holdUp) {
+            this.yv =- 10;
+        }
+        if (this.onG) {
+            this.animationReady = true;
+        } else {
+            this.animationReady = false;
+        }
+        if (this.animationReady) {
+            this.draw = this.sprites[1];
+        } else {
+            this.draw = this.sprites[0];
+        }
+    };
 };
 
 var player = new Person(200, 200);
