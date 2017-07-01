@@ -47,6 +47,7 @@ window.onload = function() {
 };
 
 function startGame() {
+    alert('starting game');
     document.removeEventListener('keydown', startGame);
     document.removeEventListener('touchstart', startGame);
 
@@ -129,7 +130,9 @@ function gameOver() {
     ctx.font = '36px Arial';
     ctx.fillText('Your score was: ' + score, canv.width/2, canv.height/2);
 }
+
 function refresh(died) {
+    //drawScreen();
     player.xv = 0;
     player.yv = 0;
     if(!died){
@@ -140,7 +143,6 @@ function refresh(died) {
             createCookie('highscore', score);
             highscore = score;
         }
-        drawScreen();
         gameOver();
     }
     plat = [];
@@ -153,7 +155,6 @@ function refresh(died) {
         h:200,
         c:'#aaaaaa'
     });
-
     (function () {
         for (var i = 0; i < totalPlats * platRatio; i += 1) {
             plat.push(
@@ -312,7 +313,7 @@ function update() {
             }
         }
     })();
-
+    var isDead = false;
     (function () {
         for (var i = 0; i < platLava.length; i += 1) {
             if (player.px > platLava[i].x &&
@@ -320,13 +321,15 @@ function update() {
                 player.py > platLava[i].y &&
                 player.py < platLava[i].y + platLava[i].h) {
                 refresh(true);
-                return;
+                isDead = true;
             }
         }
     })();
 
     player.update(holdUp);
-    drawScreen();
+    if(!isDead){
+        drawScreen();
+    }
 }
 
 function drawScreen() {
@@ -404,11 +407,13 @@ function touchStart(){
     if(player.onG) {
         player.yv =- 10;
     }
+    holdUp = true;
 }
 function touchEnd(){
     if(player.yv < -4) {
         player.yv = -4;
     }
+    holdUp = false;
 }
 
 function gyroscopeChange(evt) {
