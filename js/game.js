@@ -17,7 +17,7 @@ window.intervalId = 0;
 var canv;
 var ctx;
 
-var player = new Person(200, 200, ctx);
+var player = new Person(200, 200);
 
 window.onload = function() {
     var tmp = getCookie('highscore');
@@ -377,7 +377,7 @@ function drawScreen() {
         }
     })();
 
-    player.draw();
+    player.draw(ctx);
 
     ctx.fillStyle = 'white';
     ctx.fillText(score, 40, 40);
