@@ -1,22 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-
-var gamma = 0;
-var grav = 0.5;
-var holdLeft = false;
-var holdRight = false;
-var holdUp = false;
-var plat = [];
-var platLava = [];
-var platFragile = [];
-var totalPlats = 150;
-var platRatio = 1.05;
-var score;
-var highscore;
-window.intervalId = 0;
-var canv;
-var ctx;
-
-var Person = function(px, py){
+var Person = function(px, py, ctx){
     this.px = px;
     this.py = py;
     this.xv = 0;
@@ -58,7 +41,7 @@ var Person = function(px, py){
         this.px += this.xv;
         this.py += this.yv;
     };
-    this.update = function () {
+    this.update = function (holdUp) {
         // is called every frame
         if (this.onG && holdUp) {
             this.yv =- 10;
@@ -76,7 +59,29 @@ var Person = function(px, py){
     };
 };
 
-var player = new Person(200, 200);
+module.exports = Person;
+
+},{}],2:[function(require,module,exports){
+
+var Person = require('./Person.js');
+
+var gamma = 0;
+var grav = 0.5;
+var holdLeft = false;
+var holdRight = false;
+var holdUp = false;
+var plat = [];
+var platLava = [];
+var platFragile = [];
+var totalPlats = 150;
+var platRatio = 1.05;
+var score;
+var highscore;
+window.intervalId = 0;
+var canv;
+var ctx;
+
+var player = new Person(200, 200, ctx);
 
 window.onload = function() {
     var tmp = getCookie('highscore');
@@ -383,7 +388,7 @@ function update() {
         }
     })();
 
-    player.update();
+    player.update(holdUp);
     drawScreen();
 }
 
@@ -530,4 +535,4 @@ function getCookie(c_name) {
     return '';
 }
 
-},{}]},{},[1]);
+},{"./Person.js":1}]},{},[2]);
