@@ -1,4 +1,4 @@
-var Person = function(px, py, ctx){
+var Person = function(px, py){
     this.px = px;
     this.py = py;
     this.xv = 0;
@@ -7,7 +7,7 @@ var Person = function(px, py, ctx){
     this.c = '#ffffff';
     this.animationReady = true;
     this.sprites = [
-        function () {
+        function (ctx) {
             ctx.fillStyle = this.c;
             ctx.fillRect(this.px - 5, this.py - 20, 10, 20);
             ctx.fillStyle = 'black';
@@ -20,7 +20,7 @@ var Person = function(px, py, ctx){
                 ctx.fillRect(this.px - 3, this.py - 17, 2, 3);
             }
         },
-        function () {
+        function (ctx) {
             ctx.fillStyle = this.c;
             ctx.fillRect(this.px - 5,this.py - 17, 10, 17);
             ctx.fillRect(this.px - 7, this.py - 5, 14, 5);
