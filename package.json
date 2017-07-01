@@ -1,6 +1,6 @@
 {
   "name": "platformer-html5-game",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "Play the game [here](https://eddykasp.github.io/platformer-html5-game/plat.html)",
   "scripts": {
     "lint": "eslint js/*.js",
@@ -21,6 +21,7 @@
   "devDependencies": {
     "browserify": "^14.4.0",
     "eslint": "^4.1.1",
+    "eslint-plugin-node": "^5.1.0",
     "watch": "^1.0.2"
   }
 }
