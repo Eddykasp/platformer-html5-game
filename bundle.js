@@ -47,7 +47,6 @@ window.onload = function() {
 };
 
 function startGame() {
-    alert('starting game');
     document.removeEventListener('keydown', startGame);
     document.removeEventListener('touchstart', startGame);
 
@@ -132,7 +131,6 @@ function gameOver() {
 }
 
 function refresh(died) {
-    //drawScreen();
     player.xv = 0;
     player.yv = 0;
     if(!died){
