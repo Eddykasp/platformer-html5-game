@@ -202,14 +202,11 @@ function refresh(died) {
         }
     })();
 
-    plat.push(
-        {
-            x:player.px - (player.px % 30),
-            y:player.py - (player.py % 30),
-            w:canv.width / 30,
-            h:canv.width / 30,
-            c:'#aaaaaa'
-        });
+    plat.push(new Platform(
+        player.px - (player.px % 30),
+        player.py - (player.py % 30),
+        '#aaaaaa'
+    ));
 
     plat.push(
         {
