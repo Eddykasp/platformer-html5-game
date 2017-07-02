@@ -5,7 +5,6 @@ var Person = function(px, py){
     this.yv = 0;
     this.onG = false;
     this.c = '#ffffff';
-    this.animationReady = true;
     this.sprites = [
         function (ctx) {
             ctx.fillStyle = this.c;
@@ -70,11 +69,6 @@ var Person = function(px, py){
             this.yv =- 10;
         }
         if (this.onG) {
-            this.animationReady = true;
-        } else {
-            this.animationReady = false;
-        }
-        if (this.animationReady) {
             this.draw = this.sprites[1];
         } else {
             this.draw = this.sprites[0];
