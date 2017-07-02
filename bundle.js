@@ -13,7 +13,9 @@ module.exports = Block;
 },{}],2:[function(require,module,exports){
 var Block = require('./block.js');
 
-var Platform = function (x, y, c) {
+var Platform = function (c) {
+    var x = Math.floor(Math.random()*30)*30;
+    var y = Math.floor(Math.random()*30)*30;
     var block = new Block(x, y, 30, 30);
     block.c = c;
     block.draw = function (ctx) {
@@ -180,16 +182,15 @@ function refresh(died) {
     plat = [];
     platLava = [];
     platFragile = [];
-    var ground = new Platform(-100, canv.height - 20, '#aaaaaa');
+    var ground = new Platform('#aaaaaa');
+    ground.x = -100;
+    ground.y = canv.height - 20;
     ground.w = canv.width + 200;
     ground.h = 200;
     plat.push(ground);
     (function () {
         for (var i = 0; i < totalPlats * platRatio; i += 1) {
-            var x = Math.floor(Math.random()*canv.width/30)*canv.width/30;
-            var y = Math.floor(Math.random()*canv.width/30)*canv.width/30;
-            var c = '#aaaaaa';
-            plat.push(new Platform(x, y, c));
+            plat.push(new Platform('#aaaaaa'));
         }
     })();
 
@@ -205,10 +206,7 @@ function refresh(died) {
     }
     (function () {
         for (var i = 1; i < fragileblocks + 1; i += 1) {
-            var x = Math.floor(Math.random() * canv.width/30) * canv.width/30;
-            var y = Math.floor(Math.random() * canv.width/30) * canv.width/30;
-            var c = '#009999';
-            var fragilePlat = new Platform(x, y, c);
+            var fragilePlat = new Platform('#009999');
             fragilePlat.t = -1;
             platFragile.push(fragilePlat);
         }
@@ -236,16 +234,13 @@ function refresh(died) {
         }
     })();
 
-    plat.push(new Platform(
-        player.px - (player.px % 30),
-        player.py - (player.py % 30),
-        '#aaaaaa'
-    ));
+    var playerPlat = new Platform('#aaaaaa');
+    playerPlat.x = player.px - (player.px % 30);
+    playerPlat.y = player.py - (player.py % 30);
+    plat.push(playerPlat);
 
-    var x = Math.floor(Math.random()*canv.width/30)*canv.width/30;
-    var y = Math.floor(Math.random()*canv.width/30)*canv.width/30;
     var c = '#009900';
-    plat.push(new Platform(x, y, c));
+    plat.push(new Platform(c));
 
     (function () {
         for (var i = 0; i < plat.length - 1; i += 1) {

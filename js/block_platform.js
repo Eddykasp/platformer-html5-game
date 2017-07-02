@@ -1,6 +1,8 @@
 var Block = require('./block.js');
 
-var Platform = function (x, y, c) {
+var Platform = function (c) {
+    var x = Math.floor(Math.random()*30)*30;
+    var y = Math.floor(Math.random()*30)*30;
     var block = new Block(x, y, 30, 30);
     block.c = c;
     block.draw = function (ctx) {
