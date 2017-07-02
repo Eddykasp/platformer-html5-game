@@ -1,6 +1,40 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var Block = function (x, y, w, h) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.draw = function () {};
+    this.c = 'white';
+};
+
+module.exports = Block;
+
+},{}],2:[function(require,module,exports){
+var Block = require('./block.js');
+
+var Platform = function (x, y, c) {
+    var block = new Block(x, y, 30, 30);
+    block.c = c;
+    block.draw = function (ctx) {
+        ctx.fillStyle = block.c;
+
+        ctx.fillRect(block.x, block.y, block.w, 2);
+        ctx.fillRect(block.x + block.w - 2, block.y, 2, block.h);
+        ctx.fillRect(block.x, block.y + block.h - 2, block.w, 2);
+        ctx.fillRect(block.x, block.y, 2, block.h);
+
+        ctx.fillRect(block.x + 4, block.y + 4, block.w - 8, block.h - 8);
+    };
+    return block;
+};
+
+module.exports = Platform;
+
+},{"./block.js":1}],3:[function(require,module,exports){
 
 var Person = require('./person.js');
+var Platform = require('./block_platform');
 
 var gamma = 0;
 var grav = 0.5;
@@ -146,23 +180,16 @@ function refresh(died) {
     plat = [];
     platLava = [];
     platFragile = [];
-    plat.push({
-        x:-100,
-        y:canv.height-20,
-        w:canv.width+200,
-        h:200,
-        c:'#aaaaaa'
-    });
+    var ground = new Platform(-100, canv.height - 20, '#aaaaaa');
+    ground.w = canv.width + 200;
+    ground.h = 200;
+    plat.push(ground);
     (function () {
         for (var i = 0; i < totalPlats * platRatio; i += 1) {
-            plat.push(
-                {
-                    x:Math.floor(Math.random()*canv.width/30)*canv.width/30,
-                    y:Math.floor(Math.random()*canv.width/30)*canv.width/30,
-                    w:canv.width/30,
-                    h:canv.width/30,
-                    c:'#aaaaaa'
-                });
+            var x = Math.floor(Math.random()*canv.width/30)*canv.width/30;
+            var y = Math.floor(Math.random()*canv.width/30)*canv.width/30;
+            var c = '#aaaaaa';
+            plat.push(new Platform(x, y, c));
         }
     })();
 
@@ -475,7 +502,7 @@ function getCookie(c_name) {
     return '';
 }
 
-},{"./person.js":2}],2:[function(require,module,exports){
+},{"./block_platform":2,"./person.js":4}],4:[function(require,module,exports){
 var Person = function(px, py){
     this.px = px;
     this.py = py;
@@ -483,7 +510,6 @@ var Person = function(px, py){
     this.yv = 0;
     this.onG = false;
     this.c = '#ffffff';
-    this.animationReady = true;
     this.sprites = [
         function (ctx) {
             ctx.fillStyle = this.c;
@@ -548,11 +574,6 @@ var Person = function(px, py){
             this.yv =- 10;
         }
         if (this.onG) {
-            this.animationReady = true;
-        } else {
-            this.animationReady = false;
-        }
-        if (this.animationReady) {
             this.draw = this.sprites[1];
         } else {
             this.draw = this.sprites[0];
@@ -565,4 +586,4 @@ var Person = function(px, py){
 
 module.exports = Person;
 
-},{}]},{},[1]);
+},{}]},{},[3]);

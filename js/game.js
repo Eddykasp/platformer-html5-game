@@ -1,5 +1,6 @@
 
 var Person = require('./person.js');
+var Platform = require('./block_platform');
 
 var gamma = 0;
 var grav = 0.5;
@@ -145,23 +146,16 @@ function refresh(died) {
     plat = [];
     platLava = [];
     platFragile = [];
-    plat.push({
-        x:-100,
-        y:canv.height-20,
-        w:canv.width+200,
-        h:200,
-        c:'#aaaaaa'
-    });
+    var ground = new Platform(-100, canv.height - 20, '#aaaaaa');
+    ground.w = canv.width + 200;
+    ground.h = 200;
+    plat.push(ground);
     (function () {
         for (var i = 0; i < totalPlats * platRatio; i += 1) {
-            plat.push(
-                {
-                    x:Math.floor(Math.random()*canv.width/30)*canv.width/30,
-                    y:Math.floor(Math.random()*canv.width/30)*canv.width/30,
-                    w:canv.width/30,
-                    h:canv.width/30,
-                    c:'#aaaaaa'
-                });
+            var x = Math.floor(Math.random()*canv.width/30)*canv.width/30;
+            var y = Math.floor(Math.random()*canv.width/30)*canv.width/30;
+            var c = '#aaaaaa';
+            plat.push(new Platform(x, y, c));
         }
     })();
 
