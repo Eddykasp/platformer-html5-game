@@ -236,23 +236,16 @@ function refresh(died) {
         }
     })();
 
-    plat.push(
-        {
-            x:player.px - (player.px % 30),
-            y:player.py - (player.py % 30),
-            w:canv.width / 30,
-            h:canv.width / 30,
-            c:'#aaaaaa'
-        });
+    plat.push(new Platform(
+        player.px - (player.px % 30),
+        player.py - (player.py % 30),
+        '#aaaaaa'
+    ));
 
-    plat.push(
-        {
-            x:Math.floor(Math.random()*canv.width/30)*canv.width/30,
-            y:Math.floor(Math.random()*canv.width/30)*canv.width/30,
-            w:canv.width/30,
-            h:canv.width/30,
-            c:'#009900'
-        });
+    var x = Math.floor(Math.random()*canv.width/30)*canv.width/30;
+    var y = Math.floor(Math.random()*canv.width/30)*canv.width/30;
+    var c = '#009900';
+    plat.push(new Platform(x, y, c));
 
     (function () {
         for (var i = 0; i < plat.length - 1; i += 1) {
