@@ -1,7 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var Block = function (x, y, w, h) {
-    this.x = x;
-    this.y = y;
+var Block = function (w, h) {
+    this.x = Math.floor(Math.random()*30)*30;
+    this.y = Math.floor(Math.random()*30)*30;
     this.w = w;
     this.h = h;
     this.draw = function () {};
@@ -11,12 +11,27 @@ var Block = function (x, y, w, h) {
 module.exports = Block;
 
 },{}],2:[function(require,module,exports){
+var Block = require('./block');
+
+var Lava = function () {
+    var block = new Block(24, 24);
+    block.x += 3;
+    block.y += 3;
+    block.c = '#990000';
+    block.draw = function (ctx) {
+        ctx.fillStyle = block.c;
+        ctx.fillRect(block.x, block.y, block.w, block.h);
+    };
+    return block;
+};
+
+module.exports = Lava;
+
+},{"./block":1}],3:[function(require,module,exports){
 var Block = require('./block.js');
 
 var Platform = function (c) {
-    var x = Math.floor(Math.random()*30)*30;
-    var y = Math.floor(Math.random()*30)*30;
-    var block = new Block(x, y, 30, 30);
+    var block = new Block(30, 30);
     block.c = c;
     block.draw = function (ctx) {
         ctx.fillStyle = block.c;
@@ -33,10 +48,11 @@ var Platform = function (c) {
 
 module.exports = Platform;
 
-},{"./block.js":1}],3:[function(require,module,exports){
+},{"./block.js":1}],4:[function(require,module,exports){
 
 var Person = require('./person.js');
 var Platform = require('./block_platform');
+var Lava = require('./block_lava');
 
 var gamma = 0;
 var grav = 0.5;
@@ -221,16 +237,7 @@ function refresh(died) {
 
     (function () {
         for(var i = 1; i < lavablocks + 1; i += 1){
-            platLava.push(
-                {
-                    x:Math.floor(Math.random() * canv.width / 30) *
-                        canv.width / 30 + 3,
-                    y:Math.floor(Math.random() * canv.width / 30) *
-                        canv.width / 30 + 3,
-                    w:canv.width / 30 - 6,
-                    h:canv.width / 30 - 6,
-                    c:'#990000'
-                });
+            platLava.push(new Lava());
         }
     })();
 
@@ -485,7 +492,7 @@ function getCookie(c_name) {
     return '';
 }
 
-},{"./block_platform":2,"./person.js":4}],4:[function(require,module,exports){
+},{"./block_lava":2,"./block_platform":3,"./person.js":5}],5:[function(require,module,exports){
 var Person = function(px, py){
     this.px = px;
     this.py = py;
@@ -569,4 +576,4 @@ var Person = function(px, py){
 
 module.exports = Person;
 
-},{}]},{},[3]);
+},{}]},{},[4]);

@@ -1,6 +1,7 @@
 
 var Person = require('./person.js');
 var Platform = require('./block_platform');
+var Lava = require('./block_lava');
 
 var gamma = 0;
 var grav = 0.5;
@@ -185,16 +186,7 @@ function refresh(died) {
 
     (function () {
         for(var i = 1; i < lavablocks + 1; i += 1){
-            platLava.push(
-                {
-                    x:Math.floor(Math.random() * canv.width / 30) *
-                        canv.width / 30 + 3,
-                    y:Math.floor(Math.random() * canv.width / 30) *
-                        canv.width / 30 + 3,
-                    w:canv.width / 30 - 6,
-                    h:canv.width / 30 - 6,
-                    c:'#990000'
-                });
+            platLava.push(new Lava());
         }
     })();
 
