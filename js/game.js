@@ -3,6 +3,7 @@ var Person = require('./person');
 var Platform = require('./block_platform');
 var Lava = require('./block_lava');
 var FragilePlatform = require('./block_platform_fragile');
+var $ = require('jquery');
 
 var gamma = 0;
 var grav = 0.5;
@@ -408,4 +409,10 @@ function getCookie(c_name) {
         }
     }
     return '';
+}
+
+$('#colourBtn').change(setPlayerColour);
+
+function setPlayerColour(){
+    player.c = document.getElementById('colourBtn').value;
 }
