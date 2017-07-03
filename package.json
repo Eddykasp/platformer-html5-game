@@ -13,7 +13,7 @@
     "url": "git+https://github.com/Eddykasp/platformer-html5-game.git"
   },
   "author": "Max Kasperowski",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Eddykasp/platformer-html5-game/issues"
   },
