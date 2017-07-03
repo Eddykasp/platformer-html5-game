@@ -3,4 +3,13 @@ canvas {
     border-style: ridge;
     margin: auto;
     display: block;
+    position: relative;
+}
+
+#colourBtn {
+    position: absolute;
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+    padding: 0px;
 }
