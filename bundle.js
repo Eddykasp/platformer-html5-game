@@ -104,6 +104,7 @@ window.onload = function() {
         highscore = 0;
     }
 
+    setPlayerColour();
     canv = document.getElementById('gc');
     ctx = canv.getContext('2d');
     ctx.font = '30px Arial';
