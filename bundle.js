@@ -357,20 +357,7 @@ function drawScreen() {
                     '#00' + (3 * platFragile[i].t + 9) +
                     (3 * platFragile[i].t + 9);
             }
-            ctx.fillStyle = platFragile[i].c;
-
-            ctx.fillRect(platFragile[i].x, platFragile[i].y,
-                platFragile[i].w, 2);
-            ctx.fillRect(platFragile[i].x + platFragile[i].w - 2,
-                platFragile[i].y, 2, platFragile[i].h);
-            ctx.fillRect(platFragile[i].x,
-                platFragile[i].y + platFragile[i].h - 2,
-                platFragile[i].w, 2);
-            ctx.fillRect(platFragile[i].x, platFragile[i].y,
-                2, platFragile[i].h);
-
-            ctx.fillRect(platFragile[i].x + 4, platFragile[i].y + 4,
-                platFragile[i].w - 8, platFragile[i].h - 8);
+            platFragile[i].draw(ctx);
         }
     })();
 
