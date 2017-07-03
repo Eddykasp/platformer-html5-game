@@ -5,6 +5,8 @@ var Block = function (w, h) {
     this.w = w;
     this.h = h;
     this.draw = function () {};
+    this.update = function () {};
+    this.t = -1;
     this.c = 'white';
 };
 
@@ -49,10 +51,31 @@ var Platform = function (c) {
 module.exports = Platform;
 
 },{"./block.js":1}],4:[function(require,module,exports){
+var Platform = require('./block_platform');
 
-var Person = require('./person.js');
+var FragilePlatform = function () {
+    var platform = new Platform('#009999');
+    platform.update = function () {
+        if (platform.t > 0){
+            platform.t -= 1;
+        }
+        if (platform.t >= 0) {
+            platform.c = '#00' +
+                (3 * platform.t + 9) +
+                (3 * platform.t + 9);
+        }
+    };
+    return platform;
+};
+
+module.exports = FragilePlatform;
+
+},{"./block_platform":3}],5:[function(require,module,exports){
+
+var Person = require('./person');
 var Platform = require('./block_platform');
 var Lava = require('./block_lava');
+var FragilePlatform = require('./block_platform_fragile');
 
 var gamma = 0;
 var grav = 0.5;
@@ -222,9 +245,7 @@ function refresh(died) {
     }
     (function () {
         for (var i = 1; i < fragileblocks + 1; i += 1) {
-            var fragilePlat = new Platform('#009999');
-            fragilePlat.t = -1;
-            platFragile.push(fragilePlat);
+            platFragile.push(new FragilePlatform());
         }
     })();
 
@@ -306,9 +327,7 @@ function update() {
 
     (function () {
         for (var i = 0; i < platFragile.length; i += 1) {
-            if (platFragile[i].t > 0){
-                platFragile[i].t -= 1;
-            }
+            platFragile[i].update();
 
             if (player.px > platFragile[i].x &&
                 player.px < platFragile[i].x + platFragile[i].w &&
@@ -352,34 +371,20 @@ function drawScreen() {
     ctx.fillRect(0, 0, canv.width, canv.height);
     (function () {
         for(var i = 0; i < platFragile.length; i += 1) {
-            if (platFragile[i].t >= 0) {
-                platFragile[i].c =
-                    '#00' + (3 * platFragile[i].t + 9) +
-                    (3 * platFragile[i].t + 9);
-            }
+            platFragile[i].update();
             platFragile[i].draw(ctx);
         }
     })();
 
     (function () {
         for (var i = 0; i < plat.length; i += 1) {
-            ctx.fillStyle = plat[i].c;
-
-            ctx.fillRect(plat[i].x, plat[i].y, plat[i].w, 2);
-            ctx.fillRect(plat[i].x + plat[i].w - 2, plat[i].y, 2, plat[i].h);
-            ctx.fillRect(plat[i].x, plat[i].y + plat[i].h - 2, plat[i].w, 2);
-            ctx.fillRect(plat[i].x, plat[i].y, 2, plat[i].h);
-
-            ctx.fillRect(plat[i].x + 4, plat[i].y + 4,
-                plat[i].w - 8, plat[i].h - 8);
+            plat[i].draw(ctx);
         }
     })();
 
     (function () {
         for (var i = 0; i < platLava.length; i += 1) {
-            ctx.fillStyle = platLava[i].c;
-            ctx.fillRect(platLava[i].x, platLava[i].y,
-                platLava[i].w, platLava[i].h);
+            platLava[i].draw(ctx);
         }
     })();
 
@@ -479,7 +484,7 @@ function getCookie(c_name) {
     return '';
 }
 
-},{"./block_lava":2,"./block_platform":3,"./person.js":5}],5:[function(require,module,exports){
+},{"./block_lava":2,"./block_platform":3,"./block_platform_fragile":4,"./person":6}],6:[function(require,module,exports){
 var Person = function(px, py){
     this.px = px;
     this.py = py;
@@ -563,4 +568,4 @@ var Person = function(px, py){
 
 module.exports = Person;
 
-},{}]},{},[4]);
+},{}]},{},[5]);

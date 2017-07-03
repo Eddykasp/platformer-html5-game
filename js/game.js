@@ -1,7 +1,8 @@
 
-var Person = require('./person.js');
+var Person = require('./person');
 var Platform = require('./block_platform');
 var Lava = require('./block_lava');
+var FragilePlatform = require('./block_platform_fragile');
 
 var gamma = 0;
 var grav = 0.5;
@@ -171,9 +172,7 @@ function refresh(died) {
     }
     (function () {
         for (var i = 1; i < fragileblocks + 1; i += 1) {
-            var fragilePlat = new Platform('#009999');
-            fragilePlat.t = -1;
-            platFragile.push(fragilePlat);
+            platFragile.push(new FragilePlatform());
         }
     })();
 
@@ -255,9 +254,7 @@ function update() {
 
     (function () {
         for (var i = 0; i < platFragile.length; i += 1) {
-            if (platFragile[i].t > 0){
-                platFragile[i].t -= 1;
-            }
+            platFragile[i].update();
 
             if (player.px > platFragile[i].x &&
                 player.px < platFragile[i].x + platFragile[i].w &&
@@ -301,11 +298,7 @@ function drawScreen() {
     ctx.fillRect(0, 0, canv.width, canv.height);
     (function () {
         for(var i = 0; i < platFragile.length; i += 1) {
-            if (platFragile[i].t >= 0) {
-                platFragile[i].c =
-                    '#00' + (3 * platFragile[i].t + 9) +
-                    (3 * platFragile[i].t + 9);
-            }
+            platFragile[i].update();
             platFragile[i].draw(ctx);
         }
     })();

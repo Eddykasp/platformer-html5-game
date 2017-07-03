@@ -4,6 +4,8 @@ var Block = function (w, h) {
     this.w = w;
     this.h = h;
     this.draw = function () {};
+    this.update = function () {};
+    this.t = -1;
     this.c = 'white';
 };
 
