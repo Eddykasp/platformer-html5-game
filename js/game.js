@@ -298,7 +298,6 @@ function drawScreen() {
     ctx.fillRect(0, 0, canv.width, canv.height);
     (function () {
         for(var i = 0; i < platFragile.length; i += 1) {
-            platFragile[i].update();
             platFragile[i].draw(ctx);
         }
     })();
