@@ -19,6 +19,7 @@ var highscore;
 window.intervalId = 0;
 var canv;
 var ctx;
+var isPaused = true;
 
 var player = new Person(200, 200);
 
@@ -64,6 +65,7 @@ function startGame() {
 
 function game(){
 
+    isPaused = false;
     window.onblur = pauseGame;
     ctx.font = '30px Arial';
     window.intervalId = setInterval(update,1000/30);
@@ -75,6 +77,10 @@ function game(){
 }
 
 function pauseGame(){
+    if(isPaused){
+        return;
+    }
+    isPaused = true;
     clearInterval(window.intervalId);
     document.removeEventListener('keydown', keyDown);
     document.removeEventListener('keyup', keyUp);
