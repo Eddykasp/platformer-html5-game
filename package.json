@@ -4,7 +4,9 @@
   "description": "Play the game [here](https://eddykasp.github.io/platformer-html5-game/plat.html)",
   "scripts": {
     "lint": "eslint js/*.js",
-    "prebuild": "npm run lint",
+    "pretest": "npm run lint",
+    "test": "tape test/*.test.js",
+    "prebuild": "npm run test",
     "build": "browserify js/game.js -o bundle.js",
     "build:watch": "watch 'npm run build' ."
   },
@@ -21,6 +23,7 @@
   "devDependencies": {
     "browserify": "^14.4.0",
     "eslint": "^4.1.1",
+    "tape": "^4.7.0",
     "watch": "^1.0.2"
   }
 }
