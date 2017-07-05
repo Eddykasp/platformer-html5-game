@@ -8,7 +8,7 @@
     "test": "tape test/*.test.js | tap-spec",
     "prebuild": "npm run test",
     "build": "browserify js/game.js -o bundle.js",
-    "build:watch": "watch 'npm run build' ."
+    "build:watch": "watch 'npm run build' . --interval=60"
   },
   "repository": {
     "type": "git",
