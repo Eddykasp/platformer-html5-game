@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint js/*.js",
     "pretest": "npm run lint",
-    "test": "tape test/*.test.js",
+    "test": "tape test/*.test.js | tap-spec",
     "prebuild": "npm run test",
     "build": "browserify js/game.js -o bundle.js",
     "build:watch": "watch 'npm run build' ."
@@ -23,6 +23,7 @@
   "devDependencies": {
     "browserify": "^14.4.0",
     "eslint": "^4.1.1",
+    "tap-spec": "^4.1.1",
     "tape": "^4.7.0",
     "watch": "^1.0.2"
   }
