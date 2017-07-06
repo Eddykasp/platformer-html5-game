@@ -1,6 +1,7 @@
+var Point = require('./point');
+
 var Person = function(px, py){
-    this.px = px;
-    this.py = py;
+    this.pos = new Point(px, py);
     this.xv = 0;
     this.yv = 0;
     this.onG = false;
@@ -8,60 +9,60 @@ var Person = function(px, py){
     this.sprites = [
         function (ctx) {
             ctx.fillStyle = this.c;
-            ctx.fillRect(this.px - 5, this.py - 17, 10, 17);
-            ctx.fillRect(this.px - 4, this.py - 18, 8, 1);
-            ctx.fillRect(this.px - 3, this.py - 19, 6, 1);
-            ctx.fillRect(this.px - 2, this.py - 20, 4, 1);
+            ctx.fillRect(this.pos.x - 5, this.pos.y - 17, 10, 17);
+            ctx.fillRect(this.pos.x - 4, this.pos.y - 18, 8, 1);
+            ctx.fillRect(this.pos.x - 3, this.pos.y - 19, 6, 1);
+            ctx.fillRect(this.pos.x - 2, this.pos.y - 20, 4, 1);
             ctx.fillStyle = 'black';
             if (this.xv > 0.05){
-                ctx.fillRect(this.px + 1, this.py - 17, 2, 3);
+                ctx.fillRect(this.pos.x + 1, this.pos.y - 17, 2, 3);
             } else if (this.xv < -0.05) {
-                ctx.fillRect(this.px - 3, this.py - 17, 2, 3);
+                ctx.fillRect(this.pos.x - 3, this.pos.y - 17, 2, 3);
             } else {
-                ctx.fillRect(this.px + 1, this.py - 17, 2, 3);
-                ctx.fillRect(this.px - 3, this.py - 17, 2, 3);
+                ctx.fillRect(this.pos.x + 1, this.pos.y - 17, 2, 3);
+                ctx.fillRect(this.pos.x - 3, this.pos.y - 17, 2, 3);
             }
         },
         function (ctx) {
             ctx.fillStyle = this.c;
-            ctx.fillRect(this.px - 5, this.py - 14, 10, 14);
-            ctx.fillRect(this.px - 4, this.py - 15, 8, 1);
-            ctx.fillRect(this.px - 3, this.py - 16, 6, 1);
-            ctx.fillRect(this.px - 2, this.py - 17, 4, 1);
-            ctx.fillRect(this.px - 6, this.py - 7, 12, 7);
+            ctx.fillRect(this.pos.x - 5, this.pos.y - 14, 10, 14);
+            ctx.fillRect(this.pos.x - 4, this.pos.y - 15, 8, 1);
+            ctx.fillRect(this.pos.x - 3, this.pos.y - 16, 6, 1);
+            ctx.fillRect(this.pos.x - 2, this.pos.y - 17, 4, 1);
+            ctx.fillRect(this.pos.x - 6, this.pos.y - 7, 12, 7);
             ctx.fillStyle = 'black';
             if(this.xv > 0.05){
-                ctx.fillRect(this.px + 1, this.py - 15, 2, 3);
+                ctx.fillRect(this.pos.x + 1, this.pos.y - 15, 2, 3);
             } else if(this.xv < -0.05){
-                ctx.fillRect(this.px - 3, this.py - 15, 2, 3);
+                ctx.fillRect(this.pos.x - 3, this.pos.y - 15, 2, 3);
             } else {
-                ctx.fillRect(this.px + 1, this.py - 15, 2, 3);
-                ctx.fillRect(this.px - 3, this.py - 15, 2, 3);
+                ctx.fillRect(this.pos.x + 1, this.pos.y - 15, 2, 3);
+                ctx.fillRect(this.pos.x - 3, this.pos.y - 15, 2, 3);
             }
         },
         function (ctx) {
             ctx.fillStyle = this.c;
-            ctx.fillRect(this.px - 5, this.py - 13, 10, 13);
-            ctx.fillRect(this.px - 4, this.py - 14, 8, 1);
-            ctx.fillRect(this.px - 3, this.py - 15, 6, 1);
-            ctx.fillRect(this.px - 2, this.py - 16, 4, 1);
-            ctx.fillRect(this.px - 6, this.py - 10, 12, 9);
-            ctx.fillRect(this.px - 7, this.py - 8, 14, 7);
+            ctx.fillRect(this.pos.x - 5, this.pos.y - 13, 10, 13);
+            ctx.fillRect(this.pos.x - 4, this.pos.y - 14, 8, 1);
+            ctx.fillRect(this.pos.x - 3, this.pos.y - 15, 6, 1);
+            ctx.fillRect(this.pos.x - 2, this.pos.y - 16, 4, 1);
+            ctx.fillRect(this.pos.x - 6, this.pos.y - 10, 12, 9);
+            ctx.fillRect(this.pos.x - 7, this.pos.y - 8, 14, 7);
             ctx.fillStyle = 'black';
             if(this.xv > 0.05){
-                ctx.fillRect(this.px + 1, this.py - 15, 2, 3);
+                ctx.fillRect(this.pos.x + 1, this.pos.y - 15, 2, 3);
             } else if(this.xv < -0.05){
-                ctx.fillRect(this.px - 3, this.py - 15, 2, 3);
+                ctx.fillRect(this.pos.x - 3, this.pos.y - 15, 2, 3);
             } else {
-                ctx.fillRect(this.px + 1, this.py - 15, 2, 3);
-                ctx.fillRect(this.px - 3, this.py - 15, 2, 3);
+                ctx.fillRect(this.pos.x + 1, this.pos.y - 15, 2, 3);
+                ctx.fillRect(this.pos.x - 3, this.pos.y - 15, 2, 3);
             }
         }
     ];
     this.draw = this.sprites[1];
     this.move = function () {
-        this.px += this.xv;
-        this.py += this.yv;
+        this.pos.x += this.xv;
+        this.pos.y += this.yv;
     };
     this.update = function (holdUp) {
         // is called every frame

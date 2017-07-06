@@ -199,8 +199,8 @@ function refresh(died) {
     })();
 
     var playerPlat = new Platform('#aaaaaa');
-    playerPlat.x = player.px - (player.px % 30);
-    playerPlat.y = player.py - (player.py % 30);
+    playerPlat.x = player.pos.x - (player.pos.x % 30);
+    playerPlat.y = player.pos.y - (player.pos.y % 30);
     plat.push(playerPlat);
 
     var c = '#009900';
@@ -238,23 +238,22 @@ function update() {
         player.yv += grav;
     }
 
-    if (player.px < 0) {
-        player.px = canv.width;
+    if (player.pos.x < 0) {
+        player.pos.x = canv.width;
     }
-    if (player.px > canv.width) {
-        player.px = 0;
+    if (player.pos.x > canv.width) {
+        player.pos.x = 0;
     }
     player.onG = false;
 
     (function () {
         for(var i=0; i < plat.length; i += 1) {
-            if(player.px > plat[i].x && player.px < plat[i].x + plat[i].w &&
-                player.py > plat[i].y && player.py < plat[i].y + plat[i].h) {
+            if(plat[i].pointIsInside(player.pos)) {
                 if (plat[i].c == '#009900') {
                     refresh(false);
                     return;
                 }
-                player.py = plat[i].y;
+                player.pos.y = plat[i].y;
                 player.onG = true;
                 player.yv = 0.000001;
             }
@@ -265,15 +264,12 @@ function update() {
         for (var i = 0; i < platFragile.length; i += 1) {
             platFragile[i].update();
 
-            if (player.px > platFragile[i].x &&
-                player.px < platFragile[i].x + platFragile[i].w &&
-                player.py > platFragile[i].y &&
-                player.py < platFragile[i].y + platFragile[i].h) {
+            if (platFragile[i].pointIsInside(player.pos)) {
                 // start timer
                 if (platFragile[i].t < 0) {
                     platFragile[i].t = 30;
                 }
-                player.py = platFragile[i].y;
+                player.pos.y = platFragile[i].y;
                 player.onG = true;
                 player.yv = 0.000001;
             }
@@ -286,10 +282,7 @@ function update() {
     var isDead = false;
     (function () {
         for (var i = 0; i < platLava.length; i += 1) {
-            if (player.px > platLava[i].x &&
-                player.px < platLava[i].x + platLava[i].w &&
-                player.py > platLava[i].y &&
-                player.py < platLava[i].y + platLava[i].h) {
+            if (platLava[i].pointIsInside(player.pos)) {
                 refresh(true);
                 isDead = true;
             }
