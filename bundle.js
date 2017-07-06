@@ -9,8 +9,9 @@ var Block = function (w, h) {
     this.t = -1;
     this.c = 'white';
     this.pointIsInside = function(point){
-        return (point.x > this.x && point.x < this.x + this.w &&
+        var collision = (point.x > this.x && point.x < this.x + this.w &&
             point.y >this.y && point.y < this.y + this.h);
+        return collision;
     };
 };
 
@@ -276,8 +277,8 @@ function refresh(died) {
     })();
 
     var playerPlat = new Platform('#aaaaaa');
-    playerPlat.x = player.px - (player.px % 30);
-    playerPlat.y = player.py - (player.py % 30);
+    playerPlat.x = player.pos.x - (player.pos.x % 30);
+    playerPlat.y = player.pos.y - (player.pos.y % 30);
     plat.push(playerPlat);
 
     var c = '#009900';
@@ -315,10 +316,10 @@ function update() {
         player.yv += grav;
     }
 
-    if (player.px < 0) {
+    if (player.pos.x < 0) {
         player.pos.x = canv.width;
     }
-    if (player.px > canv.width) {
+    if (player.pos.x > canv.width) {
         player.pos.x = 0;
     }
     player.onG = false;
@@ -498,8 +499,6 @@ var Point = require('./point');
 
 var Person = function(px, py){
     this.pos = new Point(px, py);
-    this.px = this.pos.x;
-    this.py = this.pos.y;
     this.xv = 0;
     this.yv = 0;
     this.onG = false;
@@ -507,60 +506,60 @@ var Person = function(px, py){
     this.sprites = [
         function (ctx) {
             ctx.fillStyle = this.c;
-            ctx.fillRect(this.px - 5, this.py - 17, 10, 17);
-            ctx.fillRect(this.px - 4, this.py - 18, 8, 1);
-            ctx.fillRect(this.px - 3, this.py - 19, 6, 1);
-            ctx.fillRect(this.px - 2, this.py - 20, 4, 1);
+            ctx.fillRect(this.pos.x - 5, this.pos.y - 17, 10, 17);
+            ctx.fillRect(this.pos.x - 4, this.pos.y - 18, 8, 1);
+            ctx.fillRect(this.pos.x - 3, this.pos.y - 19, 6, 1);
+            ctx.fillRect(this.pos.x - 2, this.pos.y - 20, 4, 1);
             ctx.fillStyle = 'black';
             if (this.xv > 0.05){
-                ctx.fillRect(this.px + 1, this.py - 17, 2, 3);
+                ctx.fillRect(this.pos.x + 1, this.pos.y - 17, 2, 3);
             } else if (this.xv < -0.05) {
-                ctx.fillRect(this.px - 3, this.py - 17, 2, 3);
+                ctx.fillRect(this.pos.x - 3, this.pos.y - 17, 2, 3);
             } else {
-                ctx.fillRect(this.px + 1, this.py - 17, 2, 3);
-                ctx.fillRect(this.px - 3, this.py - 17, 2, 3);
+                ctx.fillRect(this.pos.x + 1, this.pos.y - 17, 2, 3);
+                ctx.fillRect(this.pos.x - 3, this.pos.y - 17, 2, 3);
             }
         },
         function (ctx) {
             ctx.fillStyle = this.c;
-            ctx.fillRect(this.px - 5, this.py - 14, 10, 14);
-            ctx.fillRect(this.px - 4, this.py - 15, 8, 1);
-            ctx.fillRect(this.px - 3, this.py - 16, 6, 1);
-            ctx.fillRect(this.px - 2, this.py - 17, 4, 1);
-            ctx.fillRect(this.px - 6, this.py - 7, 12, 7);
+            ctx.fillRect(this.pos.x - 5, this.pos.y - 14, 10, 14);
+            ctx.fillRect(this.pos.x - 4, this.pos.y - 15, 8, 1);
+            ctx.fillRect(this.pos.x - 3, this.pos.y - 16, 6, 1);
+            ctx.fillRect(this.pos.x - 2, this.pos.y - 17, 4, 1);
+            ctx.fillRect(this.pos.x - 6, this.pos.y - 7, 12, 7);
             ctx.fillStyle = 'black';
             if(this.xv > 0.05){
-                ctx.fillRect(this.px + 1, this.py - 15, 2, 3);
+                ctx.fillRect(this.pos.x + 1, this.pos.y - 15, 2, 3);
             } else if(this.xv < -0.05){
-                ctx.fillRect(this.px - 3, this.py - 15, 2, 3);
+                ctx.fillRect(this.pos.x - 3, this.pos.y - 15, 2, 3);
             } else {
-                ctx.fillRect(this.px + 1, this.py - 15, 2, 3);
-                ctx.fillRect(this.px - 3, this.py - 15, 2, 3);
+                ctx.fillRect(this.pos.x + 1, this.pos.y - 15, 2, 3);
+                ctx.fillRect(this.pos.x - 3, this.pos.y - 15, 2, 3);
             }
         },
         function (ctx) {
             ctx.fillStyle = this.c;
-            ctx.fillRect(this.px - 5, this.py - 13, 10, 13);
-            ctx.fillRect(this.px - 4, this.py - 14, 8, 1);
-            ctx.fillRect(this.px - 3, this.py - 15, 6, 1);
-            ctx.fillRect(this.px - 2, this.py - 16, 4, 1);
-            ctx.fillRect(this.px - 6, this.py - 10, 12, 9);
-            ctx.fillRect(this.px - 7, this.py - 8, 14, 7);
+            ctx.fillRect(this.pos.x - 5, this.pos.y - 13, 10, 13);
+            ctx.fillRect(this.pos.x - 4, this.pos.y - 14, 8, 1);
+            ctx.fillRect(this.pos.x - 3, this.pos.y - 15, 6, 1);
+            ctx.fillRect(this.pos.x - 2, this.pos.y - 16, 4, 1);
+            ctx.fillRect(this.pos.x - 6, this.pos.y - 10, 12, 9);
+            ctx.fillRect(this.pos.x - 7, this.pos.y - 8, 14, 7);
             ctx.fillStyle = 'black';
             if(this.xv > 0.05){
-                ctx.fillRect(this.px + 1, this.py - 15, 2, 3);
+                ctx.fillRect(this.pos.x + 1, this.pos.y - 15, 2, 3);
             } else if(this.xv < -0.05){
-                ctx.fillRect(this.px - 3, this.py - 15, 2, 3);
+                ctx.fillRect(this.pos.x - 3, this.pos.y - 15, 2, 3);
             } else {
-                ctx.fillRect(this.px + 1, this.py - 15, 2, 3);
-                ctx.fillRect(this.px - 3, this.py - 15, 2, 3);
+                ctx.fillRect(this.pos.x + 1, this.pos.y - 15, 2, 3);
+                ctx.fillRect(this.pos.x - 3, this.pos.y - 15, 2, 3);
             }
         }
     ];
     this.draw = this.sprites[1];
     this.move = function () {
-        this.px += this.xv;
-        this.py += this.yv;
+        this.pos.x += this.xv;
+        this.pos.y += this.yv;
     };
     this.update = function (holdUp) {
         // is called every frame

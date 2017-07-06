@@ -8,8 +8,9 @@ var Block = function (w, h) {
     this.t = -1;
     this.c = 'white';
     this.pointIsInside = function(point){
-        return (point.x > this.x && point.x < this.x + this.w &&
+        var collision = (point.x > this.x && point.x < this.x + this.w &&
             point.y >this.y && point.y < this.y + this.h);
+        return collision;
     };
 };
 

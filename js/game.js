@@ -199,8 +199,8 @@ function refresh(died) {
     })();
 
     var playerPlat = new Platform('#aaaaaa');
-    playerPlat.x = player.px - (player.px % 30);
-    playerPlat.y = player.py - (player.py % 30);
+    playerPlat.x = player.pos.x - (player.pos.x % 30);
+    playerPlat.y = player.pos.y - (player.pos.y % 30);
     plat.push(playerPlat);
 
     var c = '#009900';
@@ -238,10 +238,10 @@ function update() {
         player.yv += grav;
     }
 
-    if (player.px < 0) {
+    if (player.pos.x < 0) {
         player.pos.x = canv.width;
     }
-    if (player.px > canv.width) {
+    if (player.pos.x > canv.width) {
         player.pos.x = 0;
     }
     player.onG = false;
