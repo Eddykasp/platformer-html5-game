@@ -316,22 +316,21 @@ function update() {
     }
 
     if (player.px < 0) {
-        player.px = canv.width;
+        player.pos.x = canv.width;
     }
     if (player.px > canv.width) {
-        player.px = 0;
+        player.pos.x = 0;
     }
     player.onG = false;
 
     (function () {
         for(var i=0; i < plat.length; i += 1) {
-            if(player.px > plat[i].x && player.px < plat[i].x + plat[i].w &&
-                player.py > plat[i].y && player.py < plat[i].y + plat[i].h) {
+            if(plat[i].pointIsInside(player.pos)) {
                 if (plat[i].c == '#009900') {
                     refresh(false);
                     return;
                 }
-                player.py = plat[i].y;
+                player.pos.y = plat[i].y;
                 player.onG = true;
                 player.yv = 0.000001;
             }
@@ -342,15 +341,12 @@ function update() {
         for (var i = 0; i < platFragile.length; i += 1) {
             platFragile[i].update();
 
-            if (player.px > platFragile[i].x &&
-                player.px < platFragile[i].x + platFragile[i].w &&
-                player.py > platFragile[i].y &&
-                player.py < platFragile[i].y + platFragile[i].h) {
+            if (platFragile[i].pointIsInside(player.pos)) {
                 // start timer
                 if (platFragile[i].t < 0) {
                     platFragile[i].t = 30;
                 }
-                player.py = platFragile[i].y;
+                player.pos.y = platFragile[i].y;
                 player.onG = true;
                 player.yv = 0.000001;
             }
@@ -363,10 +359,7 @@ function update() {
     var isDead = false;
     (function () {
         for (var i = 0; i < platLava.length; i += 1) {
-            if (player.px > platLava[i].x &&
-                player.px < platLava[i].x + platLava[i].w &&
-                player.py > platLava[i].y &&
-                player.py < platLava[i].y + platLava[i].h) {
+            if (platLava[i].pointIsInside(player.pos)) {
                 refresh(true);
                 isDead = true;
             }
@@ -501,9 +494,12 @@ function setPlayerColour(){
 }
 
 },{"./block_lava":2,"./block_platform":3,"./block_platform_fragile":4,"./person":6}],6:[function(require,module,exports){
+var Point = require('./point');
+
 var Person = function(px, py){
-    this.px = px;
-    this.py = py;
+    this.pos = new Point(px, py);
+    this.px = this.pos.x;
+    this.py = this.pos.y;
     this.xv = 0;
     this.yv = 0;
     this.onG = false;
@@ -583,5 +579,13 @@ var Person = function(px, py){
 };
 
 module.exports = Person;
+
+},{"./point":7}],7:[function(require,module,exports){
+var Point = function(x, y){
+    this.x = x;
+    this.y = y;
+};
+
+module.exports = Point;
 
 },{}]},{},[5]);

@@ -1,6 +1,9 @@
+var Point = require('./point');
+
 var Person = function(px, py){
-    this.px = px;
-    this.py = py;
+    this.pos = new Point(px, py);
+    this.px = this.pos.x;
+    this.py = this.pos.y;
     this.xv = 0;
     this.yv = 0;
     this.onG = false;
