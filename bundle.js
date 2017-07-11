@@ -82,7 +82,7 @@ var Platform = require('./block_platform');
 var Lava = require('./block_lava');
 var FragilePlatform = require('./block_platform_fragile');
 
-var gamma = 0;
+var gamma = null;
 var grav = 0.5;
 var holdLeft = false;
 var holdRight = false;
@@ -296,17 +296,14 @@ function refresh(died) {
 }
 function update() {
     if(holdLeft) {
-        if (gamma > -15 && (gamma != 0 || gamma !== null)) {
+        if (gamma !== null && gamma > -15) {
             player.xv = (gamma + 5) * 0.1 * 4;
-            console.log('high gamma: ' + gamma);
         } else {
             player.xv =- 4;
-            console.log('no gamma: vel: ' + player.xv);
         }
-        console.log('holding left: vel: ' + player.xv);
     }
     if(holdRight) {
-        if (gamma < 15 && gamma != 0) {
+        if (gamma !== null && gamma < 15) {
             player.xv = (gamma - 5) * 0.1 * 4;
         } else {
             player.xv = 4;
@@ -433,7 +430,6 @@ function touchEnd(){
 }
 
 function gyroscopeChange(evt) {
-    console.log('gyro-event: ' + evt.gamma);
     gamma = evt.gamma;
     if(gamma > 5){
         holdRight = true;
