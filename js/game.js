@@ -218,11 +218,14 @@ function refresh(died) {
 }
 function update() {
     if(holdLeft) {
-        if (gamma > -15 && gamma != 0) {
+        if (gamma > -15 && (gamma != 0 || gamma !== null)) {
             player.xv = (gamma + 5) * 0.1 * 4;
+            console.log('high gamma: ' + gamma);
         } else {
             player.xv =- 4;
+            console.log('no gamma: vel: ' + player.xv);
         }
+        console.log('holding left: vel: ' + player.xv);
     }
     if(holdRight) {
         if (gamma < 15 && gamma != 0) {
@@ -352,6 +355,7 @@ function touchEnd(){
 }
 
 function gyroscopeChange(evt) {
+    console.log('gyro-event: ' + evt.gamma);
     gamma = evt.gamma;
     if(gamma > 5){
         holdRight = true;
