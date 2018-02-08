@@ -1,6 +1,6 @@
 ## Platformer
 
-[Play!](https://eddykasp.github.io/platformer-html5-game/plat.html)
+### [Play!](https://eddykasp.github.io/platformer-html5-game/plat.html)
 
 ### Install
 
