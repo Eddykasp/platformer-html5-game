@@ -3,19 +3,24 @@ var Person = require('./person');
 var Platform = require('./block_platform');
 var Lava = require('./block_lava');
 var FragilePlatform = require('./block_platform_fragile');
+var SandPlatform = require('./block_platform_sand');
 
 var gamma = null;
-var grav = 0.5;
+var defaultGrav = 0.5;
+var grav = defaultGrav;
 var holdLeft = false;
 var holdRight = false;
 var holdUp = false;
 var plat = [];
 var platLava = [];
 var platFragile = [];
+var platSand = [];
 var totalPlats = 150;
 var platRatio = 1.05;
 var score;
 var highscore;
+var defaultJumpV = -4;
+var jumpV = defaultJumpV;
 window.intervalId = 0;
 var canv;
 var ctx;
@@ -157,6 +162,7 @@ function refresh(died) {
     plat = [];
     platLava = [];
     platFragile = [];
+    platSand = [];
     var ground = new Platform('#aaaaaa');
     ground.x = -100;
     ground.y = canv.height - 20;
@@ -181,7 +187,12 @@ function refresh(died) {
     }
     (function () {
         for (var i = 1; i < fragileblocks + 1; i += 1) {
-            platFragile.push(new FragilePlatform());
+            var decision = Math.random();
+            if (decision < 0.75){
+                platFragile.push(new FragilePlatform());
+            } else {
+                platSand.push(new SandPlatform());
+            }
         }
     })();
 
@@ -247,13 +258,27 @@ function update() {
     player.onG = false;
 
     (function () {
-        for(var i=0; i < plat.length; i += 1) {
-            if(plat[i].pointIsInside(player.pos)) {
+        for (var i = 0; i < plat.length; i += 1) {
+            if (plat[i].pointIsInside(player.pos)) {
                 if (plat[i].c == '#009900') {
                     refresh(false);
                     return;
                 }
+                grav = defaultGrav;
+                jumpV = defaultJumpV;
                 player.pos.y = plat[i].y;
+                player.onG = true;
+                player.yv = 0.000001;
+            }
+        }
+    })();
+
+    (function (){
+        for (var i = 0; i < platSand.length; i += 1) {
+            if (platSand[i].pointIsInside(player.pos)) {
+                grav = platSand[i].grav;
+                jumpV = platSand[i].jumpV;
+                player.pos.y = platSand[i].y;
                 player.onG = true;
                 player.yv = 0.000001;
             }
@@ -269,6 +294,8 @@ function update() {
                 if (platFragile[i].t < 0) {
                     platFragile[i].t = 30;
                 }
+                grav = defaultGrav;
+                jumpV = defaultJumpV;
                 player.pos.y = platFragile[i].y;
                 player.onG = true;
                 player.yv = 0.000001;
@@ -299,8 +326,14 @@ function drawScreen() {
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canv.width, canv.height);
     (function () {
-        for(var i = 0; i < platFragile.length; i += 1) {
+        for (var i = 0; i < platFragile.length; i += 1) {
             platFragile[i].draw(ctx);
+        }
+    })();
+
+    (function () {
+        for (var i = 0; i < platSand.length; i += 1) {
+            platSand[i].draw(ctx);
         }
     })();
 
@@ -340,13 +373,13 @@ function keyDown(evt) {
 }
 function touchStart(){
     if(player.onG) {
-        player.yv =- 10;
+        player.yv = -10;
     }
     holdUp = true;
 }
 function touchEnd(){
-    if(player.yv < -4) {
-        player.yv = -4;
+    if(player.yv < jumpV) {
+        player.yv = jumpV;
     }
     holdUp = false;
 }
@@ -373,8 +406,8 @@ function keyUp(evt) {
         holdLeft = false;
         break;
     case 38:
-        if(player.yv < -4) {
-            player.yv = -4;
+        if(player.yv < jumpV) {
+            player.yv = jumpV;
         }
         holdUp = false;
         break;
