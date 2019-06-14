@@ -11,3 +11,6 @@
 1. ```npm run build``` to build for first time
 
 2. ```npm run build:watch``` to automatically rebuild when making changes to project files
+
+### Known Isssues
+- horizontal movement on Safari for iOS is not working
