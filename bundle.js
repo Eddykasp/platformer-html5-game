@@ -137,7 +137,7 @@ window.onload = function() {
     document.addEventListener('keydown', startGame);
     document.addEventListener('touchstart', startGame);
     score = highscore - 1;
-    refresh(false, false);
+    refresh(false);
     update();
     ctx.fillStyle = 'rgba(120, 120, 120, 0.7)';
     ctx.fillRect(0, 0, canv.width, canv.height);
@@ -209,7 +209,6 @@ function resumeGameKey(evt) {
         document.removeEventListener('keydown', resumeGameKey);
         document.removeEventListener('touchstart', resumeGameTouch);
         startGame();
-        refresh(false, false);
         break;
     default:
         break;
@@ -245,13 +244,11 @@ function gameOver() {
     ctx.fillText('Your score was: ' + score, canv.width/2, canv.height/2);
 }
 
-function refresh(died, point) {
+function refresh(died) {
     player.xv = 0;
     player.yv = 0;
     if(!died){
-        if (point) {
-            score += 1;
-        }
+        score += 1;
         platRatio *= 0.95;
     } else {
         if (highscore < score){
@@ -362,7 +359,7 @@ function update() {
         for (var i = 0; i < plat.length; i += 1) {
             if (plat[i].pointIsInside(player.pos)) {
                 if (plat[i].c == '#009900') {
-                    refresh(false, true);
+                    refresh(false);
                     return;
                 }
                 grav = defaultGrav;
@@ -411,7 +408,7 @@ function update() {
     (function () {
         for (var i = 0; i < platLava.length; i += 1) {
             if (platLava[i].pointIsInside(player.pos)) {
-                refresh(true, false);
+                refresh(true);
                 isDead = true;
             }
         }
