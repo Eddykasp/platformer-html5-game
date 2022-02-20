@@ -203,6 +203,9 @@ function resumeGameKey(evt) {
         document.removeEventListener('touchstart', resumeGameTouch);
         game();
         break;
+    case 82:
+        startGame();
+        break;
     default:
         break;
     }
