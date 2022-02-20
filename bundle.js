@@ -137,7 +137,7 @@ window.onload = function() {
     document.addEventListener('keydown', startGame);
     document.addEventListener('touchstart', startGame);
     score = highscore - 1;
-    refresh(false);
+    refresh(false, false);
     update();
     ctx.fillStyle = 'rgba(120, 120, 120, 0.7)';
     ctx.fillRect(0, 0, canv.width, canv.height);
@@ -198,13 +198,18 @@ function pauseGame(){
 
 function resumeGameKey(evt) {
     switch (evt.keyCode) {
+    // resume game
     case 27:
         document.removeEventListener('keydown', resumeGameKey);
         document.removeEventListener('touchstart', resumeGameTouch);
         game();
         break;
+    // restart game
     case 82:
+        document.removeEventListener('keydown', resumeGameKey);
+        document.removeEventListener('touchstart', resumeGameTouch);
         startGame();
+        refresh(false, false);
         break;
     default:
         break;
@@ -240,11 +245,13 @@ function gameOver() {
     ctx.fillText('Your score was: ' + score, canv.width/2, canv.height/2);
 }
 
-function refresh(died) {
+function refresh(died, point) {
     player.xv = 0;
     player.yv = 0;
     if(!died){
-        score += 1;
+        if (point) {
+            score += 1;
+        }
         platRatio *= 0.95;
     } else {
         if (highscore < score){
@@ -355,7 +362,7 @@ function update() {
         for (var i = 0; i < plat.length; i += 1) {
             if (plat[i].pointIsInside(player.pos)) {
                 if (plat[i].c == '#009900') {
-                    refresh(false);
+                    refresh(false, true);
                     return;
                 }
                 grav = defaultGrav;
@@ -404,7 +411,7 @@ function update() {
     (function () {
         for (var i = 0; i < platLava.length; i += 1) {
             if (platLava[i].pointIsInside(player.pos)) {
-                refresh(true);
+                refresh(true, false);
                 isDead = true;
             }
         }
