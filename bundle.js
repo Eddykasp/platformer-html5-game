@@ -189,6 +189,7 @@ function pauseGame(){
     ctx.fillRect(0, 0, canv.width, canv.height);
     ctx.fillStyle = 'white';
     ctx.font = '36px Arial';
+    ctx.fillText('Press r to restart the game', canv.width/2, canv.height/3);
     ctx.fillText('Press ESC or tap to continue', canv.width/2, canv.height/2);
 
     holdLeft = false;
