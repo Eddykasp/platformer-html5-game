@@ -189,7 +189,7 @@ function pauseGame(){
     ctx.fillRect(0, 0, canv.width, canv.height);
     ctx.fillStyle = 'white';
     ctx.font = '36px Arial';
-    ctx.fillText('Press r to restart the game', canv.width/2, canv.height/3);
+    ctx.fillText('Press R to restart the game', canv.width/2, canv.height/3);
     ctx.fillText('Press ESC or tap to continue', canv.width/2, canv.height/2);
 
     holdLeft = false;
@@ -464,6 +464,15 @@ function keyDown(evt) {
     case 39:
         holdRight=true;
         break;
+    case 65:
+        holdLeft=true;
+        break;
+    case 87:
+        holdUp = true;
+        break;
+    case 68:
+        holdRight=true;
+        break;
     case 27:
         pauseGame();
         break;
@@ -510,6 +519,18 @@ function keyUp(evt) {
         holdUp = false;
         break;
     case 39:
+        holdRight = false;
+        break;
+    case 65:
+        holdLeft = false;
+        break;
+    case 87:
+        if(player.yv < jumpV) {
+            player.yv = jumpV;
+        }
+        holdUp = false;
+        break;
+    case 68:
         holdRight = false;
         break;
     }
