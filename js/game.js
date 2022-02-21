@@ -99,6 +99,7 @@ function pauseGame(){
     ctx.fillRect(0, 0, canv.width, canv.height);
     ctx.fillStyle = 'white';
     ctx.font = '36px Arial';
+    ctx.fillText('Press r to restart the game', canv.width/2, canv.height/3);
     ctx.fillText('Press ESC or tap to continue', canv.width/2, canv.height/2);
 
     holdLeft = false;
@@ -107,10 +108,17 @@ function pauseGame(){
 
 function resumeGameKey(evt) {
     switch (evt.keyCode) {
+    // resume game
     case 27:
         document.removeEventListener('keydown', resumeGameKey);
         document.removeEventListener('touchstart', resumeGameTouch);
         game();
+        break;
+    // restart game
+    case 82:
+        document.removeEventListener('keydown', resumeGameKey);
+        document.removeEventListener('touchstart', resumeGameTouch);
+        startGame();
         break;
     default:
         break;
