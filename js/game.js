@@ -374,6 +374,15 @@ function keyDown(evt) {
     case 39:
         holdRight=true;
         break;
+    case 65:
+        holdLeft=true;
+        break;
+    case 87:
+        holdUp = true;
+        break;
+    case 68:
+        holdRight=true;
+        break;
     case 27:
         pauseGame();
         break;
@@ -420,6 +429,18 @@ function keyUp(evt) {
         holdUp = false;
         break;
     case 39:
+        holdRight = false;
+        break;
+    case 65:
+        holdLeft = false;
+        break;
+    case 87:
+        if(player.yv < jumpV) {
+            player.yv = jumpV;
+        }
+        holdUp = false;
+        break;
+    case 68:
         holdRight = false;
         break;
     }
