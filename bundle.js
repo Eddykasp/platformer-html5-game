@@ -58,6 +58,19 @@ module.exports = Platform;
 },{"./block.js":1}],4:[function(require,module,exports){
 var Platform = require('./block_platform');
 
+var BoostPlatform = function () {
+    var platform = new Platform('#995c00');
+    platform.grav = 0.3;
+    platform.jumpV = -2;
+    return platform;
+};
+
+module.exports = BoostPlatform;
+
+
+},{"./block_platform":3}],5:[function(require,module,exports){
+var Platform = require('./block_platform');
+
 var FragilePlatform = function () {
     var platform = new Platform('#009999');
     platform.update = function () {
@@ -75,7 +88,7 @@ var FragilePlatform = function () {
 
 module.exports = FragilePlatform;
 
-},{"./block_platform":3}],5:[function(require,module,exports){
+},{"./block_platform":3}],6:[function(require,module,exports){
 var Platform = require('./block_platform');
 
 var SandPlatform = function () {
@@ -87,13 +100,14 @@ var SandPlatform = function () {
 
 module.exports = SandPlatform;
 
-},{"./block_platform":3}],6:[function(require,module,exports){
+},{"./block_platform":3}],7:[function(require,module,exports){
 
 var Person = require('./person');
 var Platform = require('./block_platform');
 var Lava = require('./block_lava');
 var FragilePlatform = require('./block_platform_fragile');
 var SandPlatform = require('./block_platform_sand');
+var BoostPlatform = require('./block_platform_boost');
 
 var gamma = null;
 var defaultGrav = 0.5;
@@ -105,6 +119,7 @@ var plat = [];
 var platLava = [];
 var platFragile = [];
 var platSand = [];
+var platBoost = [];
 var totalPlats = 150;
 var platRatio = 1.05;
 var score;
@@ -261,6 +276,7 @@ function refresh(died) {
     platLava = [];
     platFragile = [];
     platSand = [];
+    platBoost = [];
     var ground = new Platform('#aaaaaa');
     ground.x = -100;
     ground.y = canv.height - 20;
@@ -290,6 +306,7 @@ function refresh(died) {
                 platFragile.push(new FragilePlatform());
             } else {
                 platSand.push(new SandPlatform());
+                platBoost.push(new BoostPlatform());
             }
         }
     })();
@@ -383,6 +400,18 @@ function update() {
         }
     })();
 
+    (function (){
+        for (var i = 0; i < platBoost.length; i += 1) {
+            if (platBoost[i].pointIsInside(player.pos)) {
+                grav = platBoost[i].grav;
+                jumpV = platBoost[i].jumpV;
+                player.pos.y = platBoost[i].y;
+                player.onG = true;
+                player.yv = 0.000001;
+            }
+        }
+    })();
+
     (function () {
         for (var i = 0; i < platFragile.length; i += 1) {
             platFragile[i].update();
@@ -404,6 +433,7 @@ function update() {
             }
         }
     })();
+
     var isDead = false;
     (function () {
         for (var i = 0; i < platLava.length; i += 1) {
@@ -432,6 +462,12 @@ function drawScreen() {
     (function () {
         for (var i = 0; i < platSand.length; i += 1) {
             platSand[i].draw(ctx);
+        }
+    })();
+
+    (function () {
+        for (var i = 0; i < platBoost.length; i += 1) {
+            platBoost[i].draw(ctx);
         }
     })();
 
@@ -568,7 +604,7 @@ function setPlayerColour(){
     player.c = document.getElementById('colourBtn').value;
 }
 
-},{"./block_lava":2,"./block_platform":3,"./block_platform_fragile":4,"./block_platform_sand":5,"./person":7}],7:[function(require,module,exports){
+},{"./block_lava":2,"./block_platform":3,"./block_platform_boost":4,"./block_platform_fragile":5,"./block_platform_sand":6,"./person":8}],8:[function(require,module,exports){
 var Point = require('./point');
 
 var Person = function(px, py){
@@ -653,7 +689,7 @@ var Person = function(px, py){
 
 module.exports = Person;
 
-},{"./point":8}],8:[function(require,module,exports){
+},{"./point":9}],9:[function(require,module,exports){
 var Point = function(x, y){
     this.x = x;
     this.y = y;
@@ -661,4 +697,5 @@ var Point = function(x, y){
 
 module.exports = Point;
 
-},{}]},{},[6]);
+},{}]},{},[7]);
+
